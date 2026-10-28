@@ -7,6 +7,11 @@ export default function SettingsScreen() {
             <Text variant='headlineMedium' style={styles.title}>
                 Placeholder for settings
             </Text>
+            {/* Toggle for Dark Mode */}
+
+            {/* Toggle for large text */}
+
+            {/* Toggle for sound effects */}
         </View>
     );
 }

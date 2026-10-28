@@ -7,42 +7,298 @@ const MOCKITEMS = [
     {
         id: '1',
         title: 'Random book',
-        description: 'random book desc'
+        description: 'random book desc',
+        location: 'Community Hall',
+        date: '12/12/2012',
+        time: '08:30-09:15',
+        spotsRemaining: '5',
+        tags: [{
+            name: 'Athletics',
+            related: false
+        },
+        {
+            name: 'Today',
+            related: true
+        },
+        {
+            name: 'Fitness',
+            related: false
+        },
+        {
+            name: 'Music',
+            related: false
+        },
+        {
+            name: 'Social',
+            related: true
+        },
+        {
+            name: 'Outdoors',
+            related: false
+        },
+        {
+            name: 'Family',
+            related: false
+        }]
     },
     {
         id: '2',
         title: 'Different book',
-        description: 'this book is totally not random'
+        description: 'this book is totally not random',
+        location: 'Community Hall',
+        date: '12/12/2012',
+        time: '08:30-09:15',
+        spotsRemaining: '5',
+        tags: [{
+            name: 'Athletics',
+            related: false
+        },
+        {
+            name: 'Today',
+            related: true
+        },
+        {
+            name: 'Fitness',
+            related: false
+        },
+        {
+            name: 'Music',
+            related: false
+        },
+        {
+            name: 'Social',
+            related: false
+        },
+        {
+            name: 'Outdoors',
+            related: true
+        },
+        {
+            name: 'Family',
+            related: false
+        }]
     },
     {
         id: '3',
         title: 'Kindle',
-        description: 'gave up on books pretty quickly'
+        description: 'gave up on books pretty quickly',
+        location: 'Community Hall',
+        date: '12/12/2012',
+        time: '08:30-09:15',
+        spotsRemaining: '5',
+        tags: [{
+            name: 'Athletics',
+            related: false
+        },
+        {
+            name: 'Today',
+            related: true
+        },
+        {
+            name: 'Fitness',
+            related: true
+        },
+        {
+            name: 'Music',
+            related: false
+        },
+        {
+            name: 'Social',
+            related: false
+        },
+        {
+            name: 'Outdoors',
+            related: false
+        },
+        {
+            name: 'Family',
+            related: false
+        }]
     },
     {
         id: '1',
         title: 'Random book',
-        description: 'random book desc'
+        description: 'random book desc',
+        location: 'Community Hall',
+        date: '12/12/2012',
+        time: '08:30-09:15',
+        spotsRemaining: '5',
+        tags: [{
+            name: 'Athletics',
+            related: false
+        },
+        {
+            name: 'Today',
+            related: true
+        },
+        {
+            name: 'Fitness',
+            related: false
+        },
+        {
+            name: 'Music',
+            related: true
+        },
+        {
+            name: 'Social',
+            related: false
+        },
+        {
+            name: 'Outdoors',
+            related: false
+        },
+        {
+            name: 'Family',
+            related: true
+        }]
     },
     {
         id: '2',
         title: 'Different book',
-        description: 'this book is totally not random'
+        description: 'this book is totally not random',
+        location: 'Community Hall',
+        date: '12/12/2012',
+        time: '08:30-09:15',
+        spotsRemaining: '5',
+        tags: [{
+            name: 'Athletics',
+            related: false
+        },
+        {
+            name: 'Today',
+            related: true
+        },
+        {
+            name: 'Fitness',
+            related: true
+        },
+        {
+            name: 'Music',
+            related: false
+        },
+        {
+            name: 'Social',
+            related: false
+        },
+        {
+            name: 'Outdoors',
+            related: false
+        },
+        {
+            name: 'Family',
+            related: false
+        }]
     },
     {
         id: '3',
         title: 'Kindle',
-        description: 'gave up on books pretty quickly'
+        description: 'gave up on books pretty quickly',
+        location: 'Community Hall',
+        date: '12/12/2012',
+        time: '08:30-09:15',
+        spotsRemaining: '5',
+        tags: [{
+            name: 'Athletics',
+            related: true
+        },
+        {
+            name: 'Today',
+            related: true
+        },
+        {
+            name: 'Fitness',
+            related: false
+        },
+        {
+            name: 'Music',
+            related: false
+        },
+        {
+            name: 'Social',
+            related: true
+        },
+        {
+            name: 'Outdoors',
+            related: true
+        },
+        {
+            name: 'Family',
+            related: false
+        }]
     },
     {
         id: '2',
         title: 'Different book',
-        description: 'this book is totally not random'
+        description: 'this book is totally not random',
+        location: 'Community Hall',
+        date: '12/12/2012',
+        time: '08:30-09:15',
+        spotsRemaining: '5',
+        tags: [{
+            name: 'Athletics',
+            related: false
+        },
+        {
+            name: 'Today',
+            related: true
+        },
+        {
+            name: 'Fitness',
+            related: true
+        },
+        {
+            name: 'Music',
+            related: false
+        },
+        {
+            name: 'Social',
+            related: false
+        },
+        {
+            name: 'Outdoors',
+            related: false
+        },
+        {
+            name: 'Family',
+            related: false
+        }]
     },
     {
         id: '3',
         title: 'Kindle',
-        description: 'gave up on books pretty quickly'
+        description: 'gave up on books pretty quickly',
+        location: 'Community Hall',
+        date: '12/12/2012',
+        time: '08:30-09:15',
+        spotsRemaining: '5',
+        tags: [{
+            name: 'Athletics',
+            related: false
+        },
+        {
+            name: 'Today',
+            related: true
+        },
+        {
+            name: 'Fitness',
+            related: false
+        },
+        {
+            name: 'Music',
+            related: false
+        },
+        {
+            name: 'Social',
+            related: true
+        },
+        {
+            name: 'Outdoors',
+            related: false
+        },
+        {
+            name: 'Family',
+            related: true
+        }]
     }
 ]
 
@@ -64,10 +320,10 @@ export default function HomeScreen({ navigation }){
                 style={{position: 'absolute', top: '18px', right: '10px'}}
             />
             {!isDisplaying &&(
-                <Card style={styles.headerCard}>
-                    <Card.Title title='Welcome'/>
+                <Card style={styles.card}>
+                    <Card.Title title='Welcome' titleStyle={{fontWeight: 'bold', fontSize: 26, color: '#0f0e36'}}/>
                     <Card.Content>
-                        <Text>
+                        <Text style={{color: '#0f0e36'}}>
                             Find and register for Community Events
                         </Text>
                         <Button mode='contained' style={styles.button} onPress={() => setIsDisplaying(!isDisplaying)}>
@@ -80,9 +336,7 @@ export default function HomeScreen({ navigation }){
                     <TextInput style={styles.eventsSearch}>
 
                     </TextInput>
-                    <Button onPress={() => setChipIsOpen(!chipIsOpen)}>
-                        {chipIsOpen ? 'Close Filters' : 'Open Filters'}
-                    </Button>
+                    <IconButton onPress={() => setChipIsOpen(!chipIsOpen)} icon={!chipIsOpen ? 'chevron-down' : 'chevron-up'}/>
                 </View>
                 
                 {chipIsOpen && (
@@ -109,8 +363,8 @@ export default function HomeScreen({ navigation }){
                 )}
                 {isDisplaying && (
                     <ScrollView>
-                        <Text variant='headlineSmall' style={styles.title} >
-                            Showing: Today - {MOCKITEMS.length} result:
+                        <Text variant='headlineSmall' style={{fontWeight: 'bold', color: '#000', fontSize: 16}} >
+                            Showing: Today - {MOCKITEMS.length} result{MOCKITEMS.length == 1 ? '' : 's'}:
                         </Text>
                         <ScrollView>
                         {
@@ -120,11 +374,18 @@ export default function HomeScreen({ navigation }){
                                     style={styles.card}
                                     onPress={() => navigation.navigate('Details', { item: item })}
                                 >
-                                    <Card.Title title={item.title}/>
-                                    <Card.Content>
+                                    <Card.Title title={item.title + ' || ' + item.time + ' || '+ item.location} titleStyle={{margin: 0, padding: 0, color: '#000000'}} />
+                                    <Card.Content style={{marginTop: 0}}>
                                         <Text style={styles.innerCard} variant='bodyMedium'>
-                                            {item.description}
+                                            {'Spots remaining:     ' + item.spotsRemaining}
                                         </Text>
+                                        <View style={styles.chipView}>
+                                            {Object.values(item.tags).filter((tag) => tag.related).map(tag => (
+                                                <Chip style={styles.chip}>
+                                                    {tag.name}
+                                                </Chip>
+                                            ))}
+                                        </View>
                                     </Card.Content>
                                 </Card>
                             ))
@@ -144,30 +405,32 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
         // alignItems: 'center',
         padding: 24,
-        backgroundColor: '#c5f4ff'
+        backgroundColor: '#1673c0'
     },
     title: {
         marginBottom: 12,
         marginRight: 20,
         fontWeight: 'bold',
-        color: '#07268a',
+        color: '#010c31',
         fontSize: 27
     },
     subtitle: {
         textAlign: 'center',
         marginBottom: 24,
-        color: '#e40d0d'
+        color: '#ffffff'
     },
     button: {
-        marginTop: 8
-    },
-    headerCard: {
-
+        marginTop: 8,
+        backgroundColor: '#fff',
+        borderColor: '#000',
+        borderWidth: 2
     },
     card: {
         marginBottom: 10,
         elevation: 3,
-        backgroundColor: '#d5a27e'
+        backgroundColor: '#ffffff',
+        borderColor: '#cfcfcf',
+        borderWidth: 1.5
     },
     innerCard: {
         marginLeft: 10,
@@ -180,12 +443,17 @@ const styles = StyleSheet.create({
         gap: '5px'
     },
     chip: {
-        marginTop: 3
+        marginTop: 3,
+        backgroundColor: '#338ad1'
     },
     eventsSearch: {
         fontSize: 'small',
         height: 5,
-        marginTop: 5
+        marginTop: 5,
+        backgroundColor: '#fff',
+        color: '#000',
+        borderColor: '#cfcfcf',
+        borderWidth: 1.5
     },
     headerView: {
         display: 'flex',
