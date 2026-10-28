@@ -1,26 +1,6 @@
-// import { StatusBar } from 'expo-status-bar';
-// import { StyleSheet, Text, View } from 'react-native';
-
-// export default function App() {
-//   return (
-//     <View style={styles.container}>
-//       <Text>Open up App.js to start working on your app!</Text>
-//       <StatusBar style="auto" />
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
-
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { Provider as PaperProvider } from 'react-native-paper';
 
 import HomeScreen from './screens/HomeScreen';
@@ -28,6 +8,21 @@ import DetailsScreen from './screens/DetailsScreen';
 import SettingsScreen from './screens/SettingsScreen';
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+function HomeStack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: { backgroundColor: '#6200ee' },
+        headerTintColor: '#fff'
+      }}
+    >
+      <Stack.Screen name='Home' component={HomeScreen} options={{headerShown: false}}/>
+      <Stack.Screen name='Details' component={DetailsScreen} options={{headerShown: true}}/>
+    </Stack.Navigator>
+  );
+}
 
 export default function App() {
   return (
@@ -41,9 +36,9 @@ export default function App() {
             headerTintColor: '#fff',
           }}
         >
-          <Tab.Screen name='Home' component={HomeScreen} />
-          <Tab.Screen name='Details' component={DetailsScreen} />
-          <Tab.Screen name='Settings' component={SettingsScreen} />
+          <Tab.Screen name='Home' component={HomeStack} options={{headerShown: false}} />
+          {/* <Tab.Screen name='Details' component={DetailsScreen} /> */}
+          <Tab.Screen name='Settings' component={SettingsScreen} options={{headerShown: false}}/>
         </Tab.Navigator>
       </NavigationContainer>
     </PaperProvider>

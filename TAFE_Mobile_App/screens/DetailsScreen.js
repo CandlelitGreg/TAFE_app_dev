@@ -1,12 +1,21 @@
 import { View, StyleSheet } from 'react-native';
-import { Text } from 'react-native-paper'
+import { Text, Card } from 'react-native-paper'
 
-export default function DetailsScreen() {
+export default function DetailsScreen({route, navigation}) {
+    const { item } = route.params;
     return (
         <View style={styles.container}>
             <Text variant='headlineMedium' style={styles.title}>
-                Placeholder for details
+                {item.title}
             </Text>
+            <Card style={styles.card}>
+                <Card.Title title={item.title}/>
+                <Card.Content>
+                    <Text style={styles.innerCard} variant='bodyMedium'>
+                        {item.description}
+                    </Text>
+                </Card.Content>
+            </Card>
         </View>
     );
 }
@@ -31,5 +40,14 @@ const styles = StyleSheet.create({
     },
     button: {
         marginTop: 8
+    },
+    card: {
+        marginBottom: 10,
+        elevation: 3,
+        backgroundColor: '#d5a27e'
+    },
+    innerCard: {
+        marginLeft: 10,
+        color: '#000'
     }
 })
