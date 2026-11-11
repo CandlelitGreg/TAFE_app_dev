@@ -1,101 +1,11 @@
 //IMPORTS
-import { useState } from 'react';
-import { View, StyleSheet, ScrollView, TextInput } from 'react-native';
-import { Text, Button, Card, Chip, IconButton } from 'react-native-paper';
+import { useState, useCallback } from 'react';
+import { View, StyleSheet, ScrollView, TextInput, SafeAreaView } from 'react-native';
+import { Text, Button, Card, Chip, IconButton, Provider as PaperProvider } from 'react-native-paper';
+import { DatePickerModal, registerTranslation, en } from 'react-native-paper-dates';
+import { MOCKITEMS, CHIP_DATA } from '../App';
 
-const MOCKITEMS = [
-    {
-        id: '1',
-        title: 'Random book',
-        description: 'random book desc',
-        location: 'Community Hall',
-        date: '12/12/2012',
-        time: '08:30-09:15',
-        spotsRemaining: '5',
-        tags: ['4']
-    },
-    {
-        id: '2',
-        title: 'Different book',
-        description: 'this book is totally not random',
-        location: 'Community Hall',
-        date: '12/12/2012',
-        time: '08:30-09:15',
-        spotsRemaining: '5',
-        tags: ['5']
-    },
-    {
-        id: '3',
-        title: 'Kindle',
-        description: 'gave up on books pretty quickly',
-        location: 'Community Hall',
-        date: '12/12/2012',
-        time: '08:30-09:15',
-        spotsRemaining: '5',
-        tags: ['2']
-    },
-    {
-        id: '4',
-        title: 'Random book',
-        description: 'random book desc',
-        location: 'Community Hall',
-        date: '12/12/2012',
-        time: '08:30-09:15',
-        spotsRemaining: '5',
-        tags: ['3']
-    },
-    {
-        id: '5',
-        title: 'Different book',
-        description: 'this book is totally not random',
-        location: 'Community Hall',
-        date: '12/12/2012',
-        time: '08:30-09:15',
-        spotsRemaining: '5',
-        tags: ['2']
-    },
-    {
-        id: '6',
-        title: 'Kindle',
-        description: 'gave up on books pretty quickly',
-        location: 'Community Hall',
-        date: '12/12/2012',
-        time: '08:30-09:15',
-        spotsRemaining: '5',
-        tags: ['1', '4', '5']
-    },
-    {
-        id: '7',
-        title: 'Different book',
-        description: 'this book is totally not random',
-        location: 'Community Hall',
-        date: '12/12/2012',
-        time: '08:30-09:15',
-        spotsRemaining: '5',
-        tags: ['2']
-    },
-    {
-        id: '8',
-        title: 'Kindle',
-        description: 'gave up on books pretty quickly',
-        location: 'Community Hall',
-        date: '12/12/2012',
-        time: '08:30-09:15',
-        spotsRemaining: '5',
-        tags: ['4', '6']
-    }
-]
-
-const CHIP_DATA = [
-    { id: '0', name: 'Today' },
-    { id: '1', name: 'Athletics' },
-    { id: '2', name: 'Fitness' },
-    { id: '3', name: 'Music' },
-    { id: '4', name: 'Social' },
-    { id: '5', name: 'Outdoors' },
-    { id: '6', name: 'Family' }
-]
-
+registerTranslation('en', en);
 
 
 
@@ -107,11 +17,24 @@ export default function EventsScreen({ route, navigation }){
     const [searchInput, setSearchInput] = useState(search || '');
     const [selectedChips, setSelectedChips] = useState(searchedChips || []);
     const [searchDisplay, setSearchDisplay] = useState('');
-    const [searchedEvents, setSearchedEvents] = useState(MOCKITEMS.filter((item) => item.title.toLowerCase().includes(searchInput.toLowerCase()) && selectedChips.every(chip => item.tags.includes(chip))) || MOCKITEMS)
+    const [date, setDate] = useState(undefined || new Date());
+    const [searchDate, setSearchDate] = useState(`${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}` || '');
+    const [searchedEvents, setSearchedEvents] = useState(MOCKITEMS.filter((item) => item.title.toLowerCase().includes(searchInput.toLowerCase()) && selectedChips.every(chip => ( CHIP_DATA[chip].name === 'Today' && item.date === searchDate ) || item.tags.includes(chip))) || MOCKITEMS)
+    // const [date, setDate] = useState(undefined);
+    // const [dateVisible, setDateVisible] = useState(false);
+
+    // const onDismiss = useCallback(() => {
+    //     setDateVisible(false);
+    // }, []);
+
+    // const onConfirm = useCallback((params) => {
+    //     setVisible(false);
+    //     setDate(params.date);
+    // }, []);
 
     const updateSearchResults = () => {
         setSearchedEvents(() =>
-            MOCKITEMS.filter((item) => item.title.toLowerCase().includes(searchInput.toLowerCase()) && selectedChips.every(chip => item.tags.includes(chip)))
+            MOCKITEMS.filter((item) => item.title.toLowerCase().includes(searchInput.toLowerCase()) && selectedChips.every(chip => ( CHIP_DATA[chip].name === 'Today' && item.date === searchDate ) || item.tags.includes(chip)))
         );
         setSearchDisplay(() => searchInput);
     };
@@ -146,29 +69,57 @@ export default function EventsScreen({ route, navigation }){
             </View>
             
             {chipIsOpen && (
-                <View style={styles.chipView}>
-                    {CHIP_DATA.map( (tag) => {
-                        const isSelected = selectedChips.includes(tag.id);
-                    
-                        return (
-                            <Chip 
-                                key={tag.id}
-                                selected={isSelected}
-                                style={[ isSelected ? styles.chipSelected : styles.chipUnselected, ]}
-                                showSelectedCheck={false}
-                                onPress={() => handleChipPress(tag.id)}
-                                mode={isSelected ? 'flat' : 'outlined'}
-                                textStyle={[ isSelected ? styles.chipSelectedText : styles.chipUnselectedText, ]}
-                            >
-                                    {tag.name}
-                            </Chip>
-                        );
-                    })}
-                </View> 
+                <View>
+                    <View style={styles.chipView}>
+                        {CHIP_DATA.map( (tag) => {
+                            const isSelected = selectedChips.includes(tag.id);
+                        
+                            return (
+                                <Chip 
+                                    key={tag.id}
+                                    selected={isSelected}
+                                    style={[ isSelected ? styles.chipSelected : styles.chipUnselected, ]}
+                                    showSelectedCheck={false}
+                                    onPress={() => handleChipPress(tag.id)}
+                                    mode={isSelected ? 'flat' : 'outlined'}
+                                    textStyle={[ isSelected ? styles.chipSelectedText : styles.chipUnselectedText, ]}
+                                >
+                                        {tag.name}
+                                </Chip>
+                            );
+                        })}
+                    </View> 
+                    {/* <SafeAreaView style={styles.container}>
+                        <View style={styles.content}>
+                        <Text style={styles.text}>
+                            {date ? `Selected Date: ${date.toLocaleDateString()}` : 'No date selected yet'}
+                        </Text>
+                        
+                        <Button 
+                            mode="contained" 
+                            onPress={() => setDateVisible(true)}
+                            icon="calendar"
+                        >
+                            Pick Date
+                        </Button>
+
+                        <DatePickerModal
+                            locale="en"
+                            mode="single"
+                            visible={dateVisible}
+                            onDismiss={onDismiss}
+                            date={date}
+                            onConfirm={onConfirm}
+                            label="Select Date" // Modal top header label
+                            saveLabel="Save" // Confirm button label
+                        />
+                        </View>
+                    </SafeAreaView> */}
+                </View>
             )}
             <ScrollView>
                 <Text variant='headlineSmall' style={{fontWeight: 'bold', color: '#000', fontSize: 16}} >
-                    Showing: {searchDisplay === '' ? 'All events' : searchDisplay} - {searchedEvents.length} result{searchedEvents.length == 1 ? '' : 's'}:
+                    Showing: {searchDisplay === '' ? 'All events' : `Results matching "${searchDisplay}"`} - {searchedEvents.length} result{searchedEvents.length == 1 ? '' : 's'}:
                 </Text>
                 <ScrollView>
                 {
@@ -178,8 +129,18 @@ export default function EventsScreen({ route, navigation }){
                             style={styles.card}
                             onPress={() => navigation.navigate('Event Details', { item: item })}
                         >
-                            <Card.Title title={item.title + ' || ' + item.time + ' || '+ item.location} titleStyle={{fontSize: 14, color: '#000000'}} />
                             <Card.Content style={{marginTop: 0}}>
+                                <Text style={styles.cardTitle}>
+                                    {item.title}
+                                </Text>
+                                <View style={styles.cardHeaders}>
+                                    <Text style={styles.cardHeading}>
+                                        {item.location}
+                                    </Text>
+                                    <Text style={styles.cardHeading}>
+                                        {item.time}
+                                    </Text>
+                                </View>
                                 <Text style={styles.innerCard} variant='bodyMedium'>
                                     {'Spots remaining:     ' + item.spotsRemaining}
                                 </Text>
@@ -248,8 +209,25 @@ const styles = StyleSheet.create({
         borderColor: '#DDAB5E',
         borderWidth: 1.5
     },
+    cardTitle: {
+        fontWeight: 'bold',
+        color: '#000000',
+        fontSize: 20,
+        paddingBottom: 5
+    },
+    cardHeading: {
+        flex: 1,
+        fontWeight: 'bold',
+        color: '#000000',
+        paddingVertical: 5
+    },
+    cardHeaders: {
+        // display: flex,
+        // justifyContent: 'space-evenly',
+        flexDirection: 'row'
+    },
     innerCard: {
-        marginLeft: 10,
+        fontSize: 12,
         color: '#000'
     },
     chipView: {
@@ -289,5 +267,11 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'horizontal'
 
+    },
+    content: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
     }
 })

@@ -1,5 +1,8 @@
 import { View, StyleSheet } from 'react-native';
 import { Text, Card, Chip, Button, IconButton } from 'react-native-paper'
+import { MOCKITEMS, CHIP_DATA } from '../App';
+
+
 
 export default function DetailsScreen({route, navigation}) {
     const { item } = route.params;
@@ -13,27 +16,30 @@ export default function DetailsScreen({route, navigation}) {
                     </Text>
                 </Card.Content>
             </Card>
+            <Text style={styles.cardDetails} variant='bodyMedium'>
+                {item.location}
+            </Text>
             <View style={styles.chipView}>
-                <Text style={styles.innerCard} variant='bodyMedium'>
+                <Text style={styles.cardDetails} variant='bodyMedium'>
+                    {item.date}
+                </Text>
+                <Text style={styles.cardDetails} variant='bodyMedium'>
                     {item.time}
                 </Text>
-                <Text style={styles.innerCard} variant='bodyMedium'>
-                    {item.location}
-                </Text>
-                <Text style={styles.innerCard} variant='bodyMedium'>
-                    {'Spots remaining:     ' + item.spotsRemaining}
-                </Text>
             </View>
+            <Text style={[styles.cardDetails, {textAlign: 'right'}]} variant='bodyMedium'>
+                {'Spots remaining:     ' + item.spotsRemaining}
+            </Text>
             <View style={styles.chipView}>
-                {Object.values(item.tags).filter((tag) => tag.related).map(tag => (
+                {Object.values(item.tags).map(tag => (
                     <Chip style={styles.chip}>
                         <Text style={styles.chipText}>
-                            {tag.name}
+                            {CHIP_DATA[tag].name}
                         </Text>
                     </Chip>
                 ))}
             </View>
-            <Button mode='contained' style={styles.button}  onPress={() => setIsDisplaying(!isDisplaying)}>
+            <Button mode='contained' style={styles.button}  onPress={() => navigation.navigate('Register', {item: item})}>
                 <Text style={{color: '#fff', fontWeight: 'bold'}}>
                     Register
                 </Text>
@@ -108,5 +114,11 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'horizontal'
 
+    },
+    cardDetails: {
+        padding: 5, 
+        fontSize: 15, 
+        color: '#000000', 
+        fontWeight: 'bold'
     }
 })

@@ -2,109 +2,14 @@
 import { useState } from 'react';
 import { View, StyleSheet, ScrollView, TextInput } from 'react-native';
 import { Text, Button, Card, Chip, IconButton } from 'react-native-paper';
-
-const MOCKITEMS = [
-    {
-        id: '1',
-        title: 'Random book',
-        description: 'random book desc',
-        location: 'Community Hall',
-        date: '12/12/2012',
-        time: '08:30-09:15',
-        spotsRemaining: '5',
-        tags: ['4']
-    },
-    {
-        id: '2',
-        title: 'Different book',
-        description: 'this book is totally not random',
-        location: 'Community Hall',
-        date: '12/12/2012',
-        time: '08:30-09:15',
-        spotsRemaining: '5',
-        tags: ['5']
-    },
-    {
-        id: '3',
-        title: 'Kindle',
-        description: 'gave up on books pretty quickly',
-        location: 'Community Hall',
-        date: '12/12/2012',
-        time: '08:30-09:15',
-        spotsRemaining: '5',
-        tags: ['2']
-    },
-    {
-        id: '4',
-        title: 'Random book',
-        description: 'random book desc',
-        location: 'Community Hall',
-        date: '12/12/2012',
-        time: '08:30-09:15',
-        spotsRemaining: '5',
-        tags: ['3']
-    },
-    {
-        id: '5',
-        title: 'Different book',
-        description: 'this book is totally not random',
-        location: 'Community Hall',
-        date: '12/12/2012',
-        time: '08:30-09:15',
-        spotsRemaining: '5',
-        tags: ['2']
-    },
-    {
-        id: '6',
-        title: 'Kindle',
-        description: 'gave up on books pretty quickly',
-        location: 'Community Hall',
-        date: '12/12/2012',
-        time: '08:30-09:15',
-        spotsRemaining: '5',
-        tags: ['1', '4', '5']
-    },
-    {
-        id: '7',
-        title: 'Different book',
-        description: 'this book is totally not random',
-        location: 'Community Hall',
-        date: '12/12/2012',
-        time: '08:30-09:15',
-        spotsRemaining: '5',
-        tags: ['2']
-    },
-    {
-        id: '8',
-        title: 'Kindle',
-        description: 'gave up on books pretty quickly',
-        location: 'Community Hall',
-        date: '12/12/2012',
-        time: '08:30-09:15',
-        spotsRemaining: '5',
-        tags: ['4', '6']
-    }
-]
-
-const CHIP_DATA = [
-    { id: '0', name: 'Today' },
-    { id: '1', name: 'Athletics' },
-    { id: '2', name: 'Fitness' },
-    { id: '3', name: 'Music' },
-    { id: '4', name: 'Social' },
-    { id: '5', name: 'Outdoors' },
-    { id: '6', name: 'Family' }
-]
-
-
-
+import { MOCKITEMS, CHIP_DATA } from '../App';
 
 
 
 //FUNCTION Export OR Compenent to use <Tag/>
 export default function HomeScreen({ navigation }){
     const [chipIsOpen, setChipIsOpen] = useState(false);
-    const [isDisplaying, setIsDisplaying] = useState(false);
+    // const [isDisplaying, setIsDisplaying] = useState(false);
     const [search, setSearch] = useState('');
     const [selectedChips, setSelectedChips] = useState([]);
 
@@ -129,58 +34,56 @@ export default function HomeScreen({ navigation }){
                 onPress={() => navigation.navigate('Settings')}
                 style={{position: 'absolute', top: '18px', right: '10px'}}
             />
-            {!isDisplaying &&(
-                <Card style={styles.card}>
-                    <Card.Title title='Welcome' titleStyle={{fontWeight: 'bold', fontSize: 26, color: '#424754'}}/>
-                    <Card.Content>
-                        <Text style={{color: '#424754'}}>
-                            Find and register for Community Events
+            <Card style={styles.card}>
+                <Card.Title title='Welcome' titleStyle={{fontWeight: 'bold', fontSize: 26, color: '#424754'}}/>
+                <Card.Content>
+                    <Text style={{color: '#424754'}}>
+                        Find and register for Community Events
+                    </Text>
+                    <Button mode='contained' style={styles.button} onPress={() => navigation.navigate('Events', { search: '', searchedChips: ['0'] })}>
+                        <Text style={{color: '#424754', fontWeight: 'bold'}}>
+                            View Today's Events
                         </Text>
-                        <Button mode='contained' style={styles.button} onPress={() => setIsDisplaying(!isDisplaying)}>
-                            <Text style={{color: '#424754', fontWeight: 'bold'}}>
-                                View Today's Events
-                            </Text>
-                        </Button>
-                    </Card.Content>
-                </Card>
-            )}
-                <View style={styles.chipView}>
-                    <TextInput 
-                        style={styles.eventsSearch}
-                        value={search}
-                        onChangeText={setSearch}>
-                    </TextInput>
-                    <IconButton
-                        icon='magnify'
-                        size={30}
-                        onPress={() => navigation.navigate('Events', { search: search, searchedChips: selectedChips })}
-                        style={{position: 'absolute', right: '40px'}}
-                    />
-                    <IconButton onPress={() => setChipIsOpen(!chipIsOpen)} icon={!chipIsOpen ? 'chevron-down' : 'chevron-up'} style={{marginHorizontal: 0}}/>
-                </View>
+                    </Button>
+                </Card.Content>
+            </Card>
+            <View style={styles.chipView}>
+                <TextInput 
+                    style={styles.eventsSearch}
+                    value={search}
+                    onChangeText={setSearch}>
+                </TextInput>
+                <IconButton
+                    icon='magnify'
+                    size={30}
+                    onPress={() => navigation.navigate('Events', { search: search, searchedChips: selectedChips })}
+                    style={{position: 'absolute', right: '40px'}}
+                />
+                <IconButton onPress={() => setChipIsOpen(!chipIsOpen)} icon={!chipIsOpen ? 'chevron-down' : 'chevron-up'} style={{marginHorizontal: 0}}/>
+            </View>
                 
-                {chipIsOpen && (
-                    <View style={styles.chipView}>
-                        {CHIP_DATA.map( (tag) => {
-                            const isSelected = selectedChips.includes(tag.id);
-                        
-                            return (
-                                <Chip 
-                                    key={tag.id}
-                                    selected={isSelected}
-                                    style={[ isSelected ? styles.chipSelected : styles.chipUnselected, ]}
-                                    showSelectedCheck={false}
-                                    onPress={() => handleChipPress(tag.id)}
-                                    mode={isSelected ? 'flat' : 'outlined'}
-                                    textStyle={[ isSelected ? styles.chipSelectedText : styles.chipUnselectedText, ]}
-                                >
-                                        {tag.name}
-                                </Chip>
-                            );
-                        })}
-                    </View> 
-                )}
-                {isDisplaying && (
+            {chipIsOpen && (
+                <View style={styles.chipView}>
+                    {CHIP_DATA.map( (tag) => {
+                        const isSelected = selectedChips.includes(tag.id);
+                    
+                        return (
+                            <Chip 
+                                key={tag.id}
+                                selected={isSelected}
+                                style={[ isSelected ? styles.chipSelected : styles.chipUnselected, ]}
+                                showSelectedCheck={false}
+                                onPress={() => handleChipPress(tag.id)}
+                                mode={isSelected ? 'flat' : 'outlined'}
+                                textStyle={[ isSelected ? styles.chipSelectedText : styles.chipUnselectedText, ]}
+                            >
+                                    {tag.name}
+                            </Chip>
+                        );
+                    })}
+                </View> 
+            )}
+                {/* {isDisplaying && (
                     <ScrollView>
                         <Text variant='headlineSmall' style={{fontWeight: 'bold', color: '#000', fontSize: 16}} >
                             Showing: Today - {MOCKITEMS.length} result{MOCKITEMS.length == 1 ? '' : 's'}:
@@ -223,7 +126,7 @@ export default function HomeScreen({ navigation }){
                         }
                         </ScrollView>
                     </ScrollView>
-                )}
+                )} */}
                 
         </View>
     );
