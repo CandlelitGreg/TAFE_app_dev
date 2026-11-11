@@ -105,13 +105,13 @@ export default function EventsScreen({ route, navigation }){
     const { searchedChips } = route.params || {};
     const [chipIsOpen, setChipIsOpen] = useState(false);
     const [searchInput, setSearchInput] = useState(search || '');
-    const [selectedChips, setSelectedChips] = useState([]);
+    const [selectedChips, setSelectedChips] = useState(searchedChips || []);
     const [searchDisplay, setSearchDisplay] = useState('');
-    const [searchedEvents, setSearchedEvents] = useState(MOCKITEMS.filter((item) => item.title.toLowerCase().includes(searchInput.toLowerCase())) || MOCKITEMS)
+    const [searchedEvents, setSearchedEvents] = useState(MOCKITEMS.filter((item) => item.title.toLowerCase().includes(searchInput.toLowerCase()) && selectedChips.every(chip => item.tags.includes(chip))) || MOCKITEMS)
 
     const updateSearchResults = () => {
         setSearchedEvents(() =>
-            MOCKITEMS.filter((item) => item.title.toLowerCase().includes(searchInput.toLowerCase()))
+            MOCKITEMS.filter((item) => item.title.toLowerCase().includes(searchInput.toLowerCase()) && selectedChips.every(chip => item.tags.includes(chip)))
         );
         setSearchDisplay(() => searchInput);
     };
@@ -123,7 +123,7 @@ export default function EventsScreen({ route, navigation }){
             } else {
                 return [...prevSelected, id];
             }
-        });
+        });   
     };
 
     return (
@@ -188,18 +188,19 @@ export default function EventsScreen({ route, navigation }){
                                         const isSelected = selectedChips.includes(tag);
                     
                                         return (
-                                        <Chip 
-                                            key={tag}
-                                            selected={isSelected}
-                                            style={[ isSelected ? styles.chipSelected : styles.chipUnselected, ]}
-                                            showSelectedCheck={false}
-                                            onPress={() => handleChipPress(tag)}
-                                            mode={isSelected ? 'flat' : 'outlined'}
-                                            textStyle={[ isSelected ? styles.chipSelectedText : styles.chipUnselectedText, ]}
-                                        >
-                                            {CHIP_DATA[tag].name}
-                                        </Chip>
-                                    )})}
+                                            <Chip 
+                                                key={tag}
+                                                selected={isSelected}
+                                                style={[ isSelected ? styles.chipSelected : styles.chipUnselected, ]}
+                                                showSelectedCheck={false}
+                                                onPress={() => handleChipPress(tag)}
+                                                mode={isSelected ? 'flat' : 'outlined'}
+                                                textStyle={[ isSelected ? styles.chipSelectedText : styles.chipUnselectedText, ]}
+                                            >
+                                                {CHIP_DATA[tag].name}
+                                            </Chip>
+                                        )
+                                    })}
                                 </View>
                             </Card.Content>
                         </Card>
