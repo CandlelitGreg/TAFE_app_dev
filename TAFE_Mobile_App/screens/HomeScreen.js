@@ -324,12 +324,12 @@ export default function HomeScreen({ navigation }){
                     <View style={styles.chipView}>
                         <Chip style={styles.chip}>
                             <Text style={styles.chipText}>
-                                Athletics
+                                Today
                             </Text>
                         </Chip>
                         <Chip style={styles.chip}>
                             <Text style={styles.chipText}>
-                                Today
+                                Athletics
                             </Text>
                         </Chip>
                         <Chip style={styles.chip}>

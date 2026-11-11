@@ -12,30 +12,7 @@ const MOCKITEMS = [
         date: '12/12/2012',
         time: '08:30-09:15',
         spotsRemaining: '5',
-        tags: [{
-            name: 'Athletics',
-            related: false
-        },
-        {
-            name: 'Fitness',
-            related: false
-        },
-        {
-            name: 'Music',
-            related: false
-        },
-        {
-            name: 'Social',
-            related: true
-        },
-        {
-            name: 'Outdoors',
-            related: false
-        },
-        {
-            name: 'Family',
-            related: false
-        }]
+        tags: ['4']
     },
     {
         id: '2',
@@ -45,30 +22,7 @@ const MOCKITEMS = [
         date: '12/12/2012',
         time: '08:30-09:15',
         spotsRemaining: '5',
-        tags: [{
-            name: 'Athletics',
-            related: false
-        },
-        {
-            name: 'Fitness',
-            related: false
-        },
-        {
-            name: 'Music',
-            related: false
-        },
-        {
-            name: 'Social',
-            related: false
-        },
-        {
-            name: 'Outdoors',
-            related: true
-        },
-        {
-            name: 'Family',
-            related: false
-        }]
+        tags: ['5']
     },
     {
         id: '3',
@@ -78,30 +32,7 @@ const MOCKITEMS = [
         date: '12/12/2012',
         time: '08:30-09:15',
         spotsRemaining: '5',
-        tags: [{
-            name: 'Athletics',
-            related: false
-        },
-        {
-            name: 'Fitness',
-            related: true
-        },
-        {
-            name: 'Music',
-            related: false
-        },
-        {
-            name: 'Social',
-            related: false
-        },
-        {
-            name: 'Outdoors',
-            related: false
-        },
-        {
-            name: 'Family',
-            related: false
-        }]
+        tags: ['2']
     },
     {
         id: '4',
@@ -111,30 +42,7 @@ const MOCKITEMS = [
         date: '12/12/2012',
         time: '08:30-09:15',
         spotsRemaining: '5',
-        tags: [{
-            name: 'Athletics',
-            related: false
-        },
-        {
-            name: 'Fitness',
-            related: false
-        },
-        {
-            name: 'Music',
-            related: true
-        },
-        {
-            name: 'Social',
-            related: false
-        },
-        {
-            name: 'Outdoors',
-            related: false
-        },
-        {
-            name: 'Family',
-            related: true
-        }]
+        tags: ['3']
     },
     {
         id: '5',
@@ -144,30 +52,7 @@ const MOCKITEMS = [
         date: '12/12/2012',
         time: '08:30-09:15',
         spotsRemaining: '5',
-        tags: [{
-            name: 'Athletics',
-            related: false
-        },
-        {
-            name: 'Fitness',
-            related: true
-        },
-        {
-            name: 'Music',
-            related: false
-        },
-        {
-            name: 'Social',
-            related: false
-        },
-        {
-            name: 'Outdoors',
-            related: false
-        },
-        {
-            name: 'Family',
-            related: false
-        }]
+        tags: ['2']
     },
     {
         id: '6',
@@ -177,30 +62,7 @@ const MOCKITEMS = [
         date: '12/12/2012',
         time: '08:30-09:15',
         spotsRemaining: '5',
-        tags: [{
-            name: 'Athletics',
-            related: true
-        },
-        {
-            name: 'Fitness',
-            related: false
-        },
-        {
-            name: 'Music',
-            related: false
-        },
-        {
-            name: 'Social',
-            related: true
-        },
-        {
-            name: 'Outdoors',
-            related: true
-        },
-        {
-            name: 'Family',
-            related: false
-        }]
+        tags: ['1', '4', '5']
     },
     {
         id: '7',
@@ -210,30 +72,7 @@ const MOCKITEMS = [
         date: '12/12/2012',
         time: '08:30-09:15',
         spotsRemaining: '5',
-        tags: [{
-            name: 'Athletics',
-            related: false
-        },
-        {
-            name: 'Fitness',
-            related: true
-        },
-        {
-            name: 'Music',
-            related: false
-        },
-        {
-            name: 'Social',
-            related: false
-        },
-        {
-            name: 'Outdoors',
-            related: false
-        },
-        {
-            name: 'Family',
-            related: false
-        }]
+        tags: ['2']
     },
     {
         id: '8',
@@ -243,31 +82,18 @@ const MOCKITEMS = [
         date: '12/12/2012',
         time: '08:30-09:15',
         spotsRemaining: '5',
-        tags: [{
-            name: 'Athletics',
-            related: false
-        },
-        {
-            name: 'Fitness',
-            related: false
-        },
-        {
-            name: 'Music',
-            related: false
-        },
-        {
-            name: 'Social',
-            related: true
-        },
-        {
-            name: 'Outdoors',
-            related: false
-        },
-        {
-            name: 'Family',
-            related: true
-        }]
+        tags: ['4', '6']
     }
+]
+
+const CHIP_DATA = [
+    { id: '0', name: 'Today' },
+    { id: '1', name: 'Athletics' },
+    { id: '2', name: 'Fitness' },
+    { id: '3', name: 'Music' },
+    { id: '4', name: 'Social' },
+    { id: '5', name: 'Outdoors' },
+    { id: '6', name: 'Family' }
 ]
 
 
@@ -275,14 +101,13 @@ const MOCKITEMS = [
 
 //FUNCTION Export OR Compenent to use <Tag/>
 export default function EventsScreen({ route, navigation }){
-    const { search } = route.params;
+    const { search } = route.params || {};
+    const { searchedChips } = route.params || {};
     const [chipIsOpen, setChipIsOpen] = useState(false);
-    const [searchInput, setSearchInput] = useState('');
+    const [searchInput, setSearchInput] = useState(search || '');
+    const [selectedChips, setSelectedChips] = useState([]);
     const [searchDisplay, setSearchDisplay] = useState('');
-    // const [updateSearchInput, setUpdateSearchInput] = useState(false);
-    // const [updateSearchChips, setUpdateSearchChips] = useState(false);
-    const [searchedEvents, setSearchedEvents] = useState(MOCKITEMS)
-    console.log(search)
+    const [searchedEvents, setSearchedEvents] = useState(MOCKITEMS.filter((item) => item.title.toLowerCase().includes(searchInput.toLowerCase())) || MOCKITEMS)
 
     const updateSearchResults = () => {
         setSearchedEvents(() =>
@@ -291,9 +116,15 @@ export default function EventsScreen({ route, navigation }){
         setSearchDisplay(() => searchInput);
     };
 
-    const Test = () => {
-        console.log(`Test component: ${searchInput}`);
-    }
+    const handleChipPress = (id) => {
+        setSelectedChips((prevSelected) => {
+            if (prevSelected.includes(id)) {
+                return prevSelected.filter((item) => item !== id);
+            } else {
+                return [...prevSelected, id];
+            }
+        });
+    };
 
     return (
         <View style={styles.container}>
@@ -316,41 +147,28 @@ export default function EventsScreen({ route, navigation }){
             
             {chipIsOpen && (
                 <View style={styles.chipView}>
-                    <Chip style={styles.chip}>
-                        <Text style={styles.chipText}>
-                            Athletics
-                        </Text>
-                    </Chip>
-                    <Chip style={styles.chip}>
-                        <Text style={styles.chipText}>
-                            Today
-                        </Text>
-                    </Chip>
-                    <Chip style={styles.chip}>
-                        <Text style={styles.chipText}>
-                            Fitness
-                        </Text>
-                    </Chip>
-                    <Chip style={styles.chip}>
-                        <Text style={styles.chipText}>
-                            Music
-                        </Text>
-                    </Chip>
-                    <Chip style={styles.chip}>
-                        <Text style={styles.chipText}>
-                            Outdoors
-                        </Text>
-                    </Chip>
-                    <Chip style={styles.chip}>
-                        <Text style={styles.chipText}>
-                            Family
-                        </Text>
-                    </Chip>
+                    {CHIP_DATA.map( (tag) => {
+                        const isSelected = selectedChips.includes(tag.id);
+                    
+                        return (
+                            <Chip 
+                                key={tag.id}
+                                selected={isSelected}
+                                style={[ isSelected ? styles.chipSelected : styles.chipUnselected, ]}
+                                showSelectedCheck={false}
+                                onPress={() => handleChipPress(tag.id)}
+                                mode={isSelected ? 'flat' : 'outlined'}
+                                textStyle={[ isSelected ? styles.chipSelectedText : styles.chipUnselectedText, ]}
+                            >
+                                    {tag.name}
+                            </Chip>
+                        );
+                    })}
                 </View> 
             )}
             <ScrollView>
                 <Text variant='headlineSmall' style={{fontWeight: 'bold', color: '#000', fontSize: 16}} >
-                    Showing: {searchDisplay} - {searchedEvents.length} result{searchedEvents.length == 1 ? '' : 's'}:
+                    Showing: {searchDisplay === '' ? 'All events' : searchDisplay} - {searchedEvents.length} result{searchedEvents.length == 1 ? '' : 's'}:
                 </Text>
                 <ScrollView>
                 {
@@ -366,13 +184,22 @@ export default function EventsScreen({ route, navigation }){
                                     {'Spots remaining:     ' + item.spotsRemaining}
                                 </Text>
                                 <View style={styles.chipView}>
-                                    {Object.values(item.tags).filter((tag) => tag.related).map(tag => (
-                                        <Chip style={styles.chip}>
-                                            <Text style={styles.chipText}>
-                                                {tag.name}
-                                            </Text>
+                                    {Object.values(item.tags).map(tag => {
+                                        const isSelected = selectedChips.includes(tag);
+                    
+                                        return (
+                                        <Chip 
+                                            key={tag}
+                                            selected={isSelected}
+                                            style={[ isSelected ? styles.chipSelected : styles.chipUnselected, ]}
+                                            showSelectedCheck={false}
+                                            onPress={() => handleChipPress(tag)}
+                                            mode={isSelected ? 'flat' : 'outlined'}
+                                            textStyle={[ isSelected ? styles.chipSelectedText : styles.chipUnselectedText, ]}
+                                        >
+                                            {CHIP_DATA[tag].name}
                                         </Chip>
-                                    ))}
+                                    )})}
                                 </View>
                             </Card.Content>
                         </Card>
@@ -430,12 +257,21 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         gap: '5px'
     },
-    chip: {
+    chipSelected: {
         marginTop: 3,
         backgroundColor: '#3CA6E5'
     },
-    chipText: {
+    chipUnselected: {
+        marginTop: 3,
+        backgroundColor: '#ffffff',
+        borderColor: '#DDAB5E'
+    },
+    chipSelectedText: {
         color: '#ffffff',
+        fontWeight: 'bold'
+    },
+    chipUnselectedText: {
+        color: '#000000',
         fontWeight: 'bold'
     },
     eventsSearch: {
