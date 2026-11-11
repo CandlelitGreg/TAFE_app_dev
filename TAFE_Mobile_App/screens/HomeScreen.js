@@ -17,10 +17,6 @@ const MOCKITEMS = [
             related: false
         },
         {
-            name: 'Today',
-            related: true
-        },
-        {
             name: 'Fitness',
             related: false
         },
@@ -54,10 +50,6 @@ const MOCKITEMS = [
             related: false
         },
         {
-            name: 'Today',
-            related: true
-        },
-        {
             name: 'Fitness',
             related: false
         },
@@ -89,10 +81,6 @@ const MOCKITEMS = [
         tags: [{
             name: 'Athletics',
             related: false
-        },
-        {
-            name: 'Today',
-            related: true
         },
         {
             name: 'Fitness',
@@ -128,10 +116,6 @@ const MOCKITEMS = [
             related: false
         },
         {
-            name: 'Today',
-            related: true
-        },
-        {
             name: 'Fitness',
             related: false
         },
@@ -163,10 +147,6 @@ const MOCKITEMS = [
         tags: [{
             name: 'Athletics',
             related: false
-        },
-        {
-            name: 'Today',
-            related: true
         },
         {
             name: 'Fitness',
@@ -202,10 +182,6 @@ const MOCKITEMS = [
             related: true
         },
         {
-            name: 'Today',
-            related: true
-        },
-        {
             name: 'Fitness',
             related: false
         },
@@ -239,10 +215,6 @@ const MOCKITEMS = [
             related: false
         },
         {
-            name: 'Today',
-            related: true
-        },
-        {
             name: 'Fitness',
             related: true
         },
@@ -274,10 +246,6 @@ const MOCKITEMS = [
         tags: [{
             name: 'Athletics',
             related: false
-        },
-        {
-            name: 'Today',
-            related: true
         },
         {
             name: 'Fitness',
@@ -303,6 +271,8 @@ const MOCKITEMS = [
 ]
 
 
+
+
 //FUNCTION Export OR Compenent to use <Tag/>
 export default function HomeScreen({ navigation }){
     const [chipIsOpen, setChipIsOpen] = useState(false);
@@ -321,19 +291,22 @@ export default function HomeScreen({ navigation }){
             />
             {!isDisplaying &&(
                 <Card style={styles.card}>
-                    <Card.Title title='Welcome' titleStyle={{fontWeight: 'bold', fontSize: 26, color: '#0f0e36'}}/>
+                    <Card.Title title='Welcome' titleStyle={{fontWeight: 'bold', fontSize: 26, color: '#424754'}}/>
                     <Card.Content>
-                        <Text style={{color: '#0f0e36'}}>
+                        <Text style={{color: '#424754'}}>
                             Find and register for Community Events
                         </Text>
                         <Button mode='contained' style={styles.button} onPress={() => setIsDisplaying(!isDisplaying)}>
-                            View Today's Events
+                            <Text style={{color: '#424754', fontWeight: 'bold'}}>
+                                View Today's Events
+                            </Text>
                         </Button>
                     </Card.Content>
                 </Card>
             )}
                 <View style={styles.chipView}>
-                    <TextInput style={styles.eventsSearch}>
+                    {/* Fix textbox text colour */}
+                    <TextInput style={styles.eventsSearch} >
 
                     </TextInput>
                     <IconButton onPress={() => setChipIsOpen(!chipIsOpen)} icon={!chipIsOpen ? 'chevron-down' : 'chevron-up'}/>
@@ -342,22 +315,34 @@ export default function HomeScreen({ navigation }){
                 {chipIsOpen && (
                     <View style={styles.chipView}>
                         <Chip style={styles.chip}>
-                            Athletics
+                            <Text style={styles.chipText}>
+                                Athletics
+                            </Text>
                         </Chip>
                         <Chip style={styles.chip}>
-                            Today
+                            <Text style={styles.chipText}>
+                                Today
+                            </Text>
                         </Chip>
                         <Chip style={styles.chip}>
-                            Fitness
+                            <Text style={styles.chipText}>
+                                Fitness
+                            </Text>
                         </Chip>
                         <Chip style={styles.chip}>
-                            Music
+                            <Text style={styles.chipText}>
+                                Music
+                            </Text>
                         </Chip>
                         <Chip style={styles.chip}>
-                            Outdoors
+                            <Text style={styles.chipText}>
+                                Outdoors
+                            </Text>
                         </Chip>
                         <Chip style={styles.chip}>
-                            Family
+                            <Text style={styles.chipText}>
+                                Family
+                            </Text>
                         </Chip>
                     </View> 
                 )}
@@ -372,9 +357,9 @@ export default function HomeScreen({ navigation }){
                                 <Card
                                     key={item.id}
                                     style={styles.card}
-                                    onPress={() => navigation.navigate('Details', { item: item })}
+                                    onPress={() => navigation.navigate('Event Details', { item: item })}
                                 >
-                                    <Card.Title title={item.title + ' || ' + item.time + ' || '+ item.location} titleStyle={{margin: 0, padding: 0, color: '#000000'}} />
+                                    <Card.Title title={item.title + ' || ' + item.time + ' || '+ item.location} titleStyle={{fontSize: 14, color: '#000000'}} />
                                     <Card.Content style={{marginTop: 0}}>
                                         <Text style={styles.innerCard} variant='bodyMedium'>
                                             {'Spots remaining:     ' + item.spotsRemaining}
@@ -382,7 +367,9 @@ export default function HomeScreen({ navigation }){
                                         <View style={styles.chipView}>
                                             {Object.values(item.tags).filter((tag) => tag.related).map(tag => (
                                                 <Chip style={styles.chip}>
-                                                    {tag.name}
+                                                    <Text style={styles.chipText}>
+                                                        {tag.name}
+                                                    </Text>
                                                 </Chip>
                                             ))}
                                         </View>
@@ -405,7 +392,7 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
         // alignItems: 'center',
         padding: 24,
-        backgroundColor: '#1673c0'
+        backgroundColor: '#F5F5F5'
     },
     title: {
         marginBottom: 12,
@@ -421,15 +408,16 @@ const styles = StyleSheet.create({
     },
     button: {
         marginTop: 8,
-        backgroundColor: '#fff',
+        backgroundColor: '#3CA6E5',
         borderColor: '#000',
         borderWidth: 2
     },
     card: {
         marginBottom: 10,
+        marginRight: 8,
         elevation: 3,
         backgroundColor: '#ffffff',
-        borderColor: '#cfcfcf',
+        borderColor: '#DDAB5E',
         borderWidth: 1.5
     },
     innerCard: {
@@ -444,15 +432,20 @@ const styles = StyleSheet.create({
     },
     chip: {
         marginTop: 3,
-        backgroundColor: '#338ad1'
+        backgroundColor: '#3CA6E5'
+    },
+    chipText: {
+        color: '#ffffff',
+        fontWeight: 'bold'
     },
     eventsSearch: {
+        flex: 1,
         fontSize: 'small',
         height: 5,
         marginTop: 5,
         backgroundColor: '#fff',
         color: '#000',
-        borderColor: '#cfcfcf',
+        borderColor: '#DDAB5E',
         borderWidth: 1.5
     },
     headerView: {
