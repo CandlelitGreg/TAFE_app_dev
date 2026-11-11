@@ -1,7 +1,7 @@
 //IMPORTS
 import { useState } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
-import { Text, Button, Card, Chip, TextInput, IconButton } from 'react-native-paper';
+import { View, StyleSheet, ScrollView, TextInput } from 'react-native';
+import { Text, Button, Card, Chip, IconButton } from 'react-native-paper';
 
 const MOCKITEMS = [
     {
@@ -104,7 +104,7 @@ const MOCKITEMS = [
         }]
     },
     {
-        id: '1',
+        id: '4',
         title: 'Random book',
         description: 'random book desc',
         location: 'Community Hall',
@@ -137,7 +137,7 @@ const MOCKITEMS = [
         }]
     },
     {
-        id: '2',
+        id: '5',
         title: 'Different book',
         description: 'this book is totally not random',
         location: 'Community Hall',
@@ -170,7 +170,7 @@ const MOCKITEMS = [
         }]
     },
     {
-        id: '3',
+        id: '6',
         title: 'Kindle',
         description: 'gave up on books pretty quickly',
         location: 'Community Hall',
@@ -203,7 +203,7 @@ const MOCKITEMS = [
         }]
     },
     {
-        id: '2',
+        id: '7',
         title: 'Different book',
         description: 'this book is totally not random',
         location: 'Community Hall',
@@ -236,7 +236,7 @@ const MOCKITEMS = [
         }]
     },
     {
-        id: '3',
+        id: '8',
         title: 'Kindle',
         description: 'gave up on books pretty quickly',
         location: 'Community Hall',
@@ -277,6 +277,7 @@ const MOCKITEMS = [
 export default function HomeScreen({ navigation }){
     const [chipIsOpen, setChipIsOpen] = useState(false);
     const [isDisplaying, setIsDisplaying] = useState(false);
+    const [search, setSearch] = useState('');
 
     return (
         <View style={styles.container}>
@@ -305,11 +306,18 @@ export default function HomeScreen({ navigation }){
                 </Card>
             )}
                 <View style={styles.chipView}>
-                    {/* Fix textbox text colour */}
-                    <TextInput style={styles.eventsSearch} >
-
+                    <TextInput 
+                        style={styles.eventsSearch}
+                        value={search}
+                        onChangeText={setSearch}>
                     </TextInput>
-                    <IconButton onPress={() => setChipIsOpen(!chipIsOpen)} icon={!chipIsOpen ? 'chevron-down' : 'chevron-up'}/>
+                    <IconButton
+                        icon='magnify'
+                        size={30}
+                        onPress={() => navigation.navigate('Events', { search: search })}
+                        style={{position: 'absolute', right: '40px'}}
+                    />
+                    <IconButton onPress={() => setChipIsOpen(!chipIsOpen)} icon={!chipIsOpen ? 'chevron-down' : 'chevron-up'} style={{marginHorizontal: 0}}/>
                 </View>
                 
                 {chipIsOpen && (
@@ -441,16 +449,15 @@ const styles = StyleSheet.create({
     eventsSearch: {
         flex: 1,
         fontSize: 'small',
-        height: 5,
         marginTop: 5,
         backgroundColor: '#fff',
         color: '#000',
         borderColor: '#DDAB5E',
-        borderWidth: 1.5
+        borderWidth: 1.5,
+        paddingHorizontal: 10
     },
     headerView: {
         display: 'flex',
         flexDirection: 'horizontal'
-
     }
 })

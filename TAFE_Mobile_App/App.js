@@ -2,18 +2,20 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { Provider as PaperProvider, IconButton } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 
 import HomeScreen from './screens/HomeScreen';
 import DetailsScreen from './screens/DetailsScreen';
 import SettingsScreen from './screens/SettingsScreen';
+import EventsScreen from './screens/EventsScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-function HomeStack({navigation}) {
+function HomeStack() {
   return (
     <Stack.Navigator
-      screenOptions={{
+      screenOptions={( {navigation} ) => ({
         headerRight: () => (
           <IconButton
             type='button'
@@ -25,10 +27,12 @@ function HomeStack({navigation}) {
         ),
         headerStyle: { backgroundColor: '#3CA6E5' },
         headerTintColor: '#fff'
-      }}
+      })}
     >
       <Stack.Screen name='Home' component={HomeScreen} options={{headerShown: false}}/>
       <Stack.Screen name='Event Details' component={DetailsScreen} options={{headerShown: true}}/>
+      <Stack.Screen name='Events' component={EventsScreen} options={{headerShown: true}}/>
+      <Stack.Screen name='Settings' component={SettingsScreen} options={{headerShown: false}}/>
     </Stack.Navigator>
   );
 }
@@ -46,8 +50,6 @@ export default function App() {
           }}
         >
           <Tab.Screen name='Home' component={HomeStack} options={{headerShown: false}} />
-          {/* <Tab.Screen name='Details' component={DetailsScreen} /> */}
-          <Tab.Screen name='Settings' component={SettingsScreen} options={{headerShown: false}}/>
         </Tab.Navigator>
       </NavigationContainer>
     </PaperProvider>
