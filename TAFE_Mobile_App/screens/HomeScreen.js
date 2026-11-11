@@ -12,6 +12,8 @@ export default function HomeScreen({ navigation }){
     // const [isDisplaying, setIsDisplaying] = useState(false);
     const [search, setSearch] = useState('');
     const [selectedChips, setSelectedChips] = useState([]);
+    const [datePicked, setDatePicked] = useState(false);
+    const [searchDate, setSearchDate] = useState(undefined || new Date())
 
     const handleChipPress = (id) => {
         setSelectedChips((prevSelected) => {

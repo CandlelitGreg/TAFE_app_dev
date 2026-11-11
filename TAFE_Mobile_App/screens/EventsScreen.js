@@ -5,6 +5,7 @@ import { Text, Button, Card, Chip, IconButton, Provider as PaperProvider } from 
 import { DatePickerModal, registerTranslation, en } from 'react-native-paper-dates';
 import { MOCKITEMS, CHIP_DATA } from '../App';
 
+
 registerTranslation('en', en);
 
 
@@ -13,28 +14,45 @@ registerTranslation('en', en);
 export default function EventsScreen({ route, navigation }){
     const { search } = route.params || {};
     const { searchedChips } = route.params || {};
+    const { searchedWithDate } = route.params || {};
+    const { searchedDate } = route.params || {};
+    const today = `${String(new Date().getDate()).padStart(2, '0')}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${new Date().getFullYear()}`;
     const [chipIsOpen, setChipIsOpen] = useState(false);
     const [searchInput, setSearchInput] = useState(search || '');
     const [selectedChips, setSelectedChips] = useState(searchedChips || []);
     const [searchDisplay, setSearchDisplay] = useState('');
-    const [date, setDate] = useState(undefined || new Date());
-    const [searchDate, setSearchDate] = useState(`${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}` || '');
-    const [searchedEvents, setSearchedEvents] = useState(MOCKITEMS.filter((item) => item.title.toLowerCase().includes(searchInput.toLowerCase()) && selectedChips.every(chip => ( CHIP_DATA[chip].name === 'Today' && item.date === searchDate ) || item.tags.includes(chip))) || MOCKITEMS)
-    // const [date, setDate] = useState(undefined);
-    // const [dateVisible, setDateVisible] = useState(false);
+    const [date, setDate] = useState(searchedDate || new Date());
+    const [datePicked, setDatePicked] = useState(searchedWithDate || false);
+    const [searchDate, setSearchDate] = useState(`${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`);
+    const [searchedEvents, setSearchedEvents] = useState(!datePicked ? MOCKITEMS.filter((item) => item.title.toLowerCase().includes(searchInput.toLowerCase()) && selectedChips.every(chip => item.tags.includes(chip))) : MOCKITEMS.filter((item) => item.title.toLowerCase().includes(searchInput.toLowerCase()) && selectedChips.every(chip => item.tags.includes(chip)) && item.date === searchDate) || MOCKITEMS);
+    const [dateVisible, setDateVisible] = useState(false);
 
-    // const onDismiss = useCallback(() => {
-    //     setDateVisible(false);
-    // }, []);
+    const dismissDate = useCallback(() => {
+        setDateVisible(false);
+        setDatePicked(false);
+    }, []);
 
-    // const onConfirm = useCallback((params) => {
-    //     setVisible(false);
-    //     setDate(params.date);
-    // }, []);
+    const generateDate = useCallback((params) => {
+        const day = String(params.date.getDate()).padStart(2, '0');
+        const month = String(params.date.getMonth() + 1).padStart(2, '0');
+        const year = params.date.getFullYear();
+        return `${day}/${month}/${year}`;
+    }, []);
+
+    const confirmDate = useCallback((params) => {
+        const formattedDate = generateDate({date: params.date});
+
+        setDatePicked(true);
+        setDateVisible(false);
+        setDate(params.date);
+        setSearchDate(formattedDate);
+        console.log(`date picked: ${params.date} -- date used: ${formattedDate}`);
+        handleChipPress('0');
+    }, []);
 
     const updateSearchResults = () => {
         setSearchedEvents(() =>
-            MOCKITEMS.filter((item) => item.title.toLowerCase().includes(searchInput.toLowerCase()) && selectedChips.every(chip => ( CHIP_DATA[chip].name === 'Today' && item.date === searchDate ) || item.tags.includes(chip)))
+            !datePicked ? MOCKITEMS.filter((item) => item.title.toLowerCase().includes(searchInput.toLowerCase()) && selectedChips.every(chip => item.tags.includes(chip))) : MOCKITEMS.filter((item) => item.title.toLowerCase().includes(searchInput.toLowerCase()) && selectedChips.every(chip => item.tags.includes(chip)) && item.date === searchDate)
         );
         setSearchDisplay(() => searchInput);
     };
@@ -42,8 +60,15 @@ export default function EventsScreen({ route, navigation }){
     const handleChipPress = (id) => {
         setSelectedChips((prevSelected) => {
             if (prevSelected.includes(id)) {
+                if (id === '0') {
+                    setDatePicked(false);
+                }
                 return prevSelected.filter((item) => item !== id);
             } else {
+                if (id === '0') {
+                    setDatePicked(true);
+                    setSearchDate(generateDate({date: new Date()}));
+                }
                 return [...prevSelected, id];
             }
         });   
@@ -89,10 +114,10 @@ export default function EventsScreen({ route, navigation }){
                             );
                         })}
                     </View> 
-                    {/* <SafeAreaView style={styles.container}>
+                    <SafeAreaView style={styles.container}>
                         <View style={styles.content}>
                         <Text style={styles.text}>
-                            {date ? `Selected Date: ${date.toLocaleDateString()}` : 'No date selected yet'}
+                            {datePicked ? `Selected Date: ${searchDate}` : 'No date selected yet'}
                         </Text>
                         
                         <Button 
@@ -107,14 +132,14 @@ export default function EventsScreen({ route, navigation }){
                             locale="en"
                             mode="single"
                             visible={dateVisible}
-                            onDismiss={onDismiss}
+                            onDismiss={dismissDate}
                             date={date}
-                            onConfirm={onConfirm}
+                            onConfirm={confirmDate}
                             label="Select Date" // Modal top header label
                             saveLabel="Save" // Confirm button label
                         />
                         </View>
-                    </SafeAreaView> */}
+                    </SafeAreaView>
                 </View>
             )}
             <ScrollView>
