@@ -24,7 +24,7 @@ export default function EventsScreen({ route, navigation }){
     const [date, setDate] = useState(searchedDate || new Date());
     const [datePicked, setDatePicked] = useState(searchedWithDate || false);
     const [searchDate, setSearchDate] = useState(`${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`);
-    const [searchedEvents, setSearchedEvents] = useState(!datePicked ? MOCKITEMS.filter((item) => item.title.toLowerCase().includes(searchInput.toLowerCase()) && selectedChips.every(chip => item.tags.includes(chip))) : MOCKITEMS.filter((item) => item.title.toLowerCase().includes(searchInput.toLowerCase()) && selectedChips.every(chip => item.tags.includes(chip)) && item.date === searchDate) || MOCKITEMS);
+    const [searchedEvents, setSearchedEvents] = useState(!datePicked ? MOCKITEMS.filter((item) => item.title.toLowerCase().includes(searchInput.toLowerCase()) && (!Array.isArray(selectedChips) || (selectedChips.every(chip => item.tags.includes(chip))))) : MOCKITEMS.filter((item) => item.title.toLowerCase().includes(searchInput.toLowerCase()) && (!Array.isArray(selectedChips) || selectedChips.every(chip => item.tags.includes(chip))) && item.date === searchDate) || MOCKITEMS);
     const [dateVisible, setDateVisible] = useState(false);
 
     const dismissDate = useCallback(() => {
@@ -41,18 +41,26 @@ export default function EventsScreen({ route, navigation }){
 
     const confirmDate = useCallback((params) => {
         const formattedDate = generateDate({date: params.date});
-
         setDatePicked(true);
         setDateVisible(false);
         setDate(params.date);
         setSearchDate(formattedDate);
         console.log(`date picked: ${params.date} -- date used: ${formattedDate}`);
-        handleChipPress('0');
+        setSelectedChips((prevSelected) => {
+            if (prevSelected?.includes('0') && formattedDate !== today) {
+                return prevSelected.filter((item) => item !== '0');
+            } else {
+                if (formattedDate === today) {
+                    setDatePicked(true);
+                    return [...prevSelected, '0'];
+                }
+            }
+        });   
     }, []);
 
     const updateSearchResults = () => {
         setSearchedEvents(() =>
-            !datePicked ? MOCKITEMS.filter((item) => item.title.toLowerCase().includes(searchInput.toLowerCase()) && selectedChips.every(chip => item.tags.includes(chip))) : MOCKITEMS.filter((item) => item.title.toLowerCase().includes(searchInput.toLowerCase()) && selectedChips.every(chip => item.tags.includes(chip)) && item.date === searchDate)
+            !datePicked ? MOCKITEMS.filter((item) => item.title.toLowerCase().includes(searchInput.toLowerCase()) && (!Array.isArray(selectedChips) || selectedChips.every(chip => item.tags.includes(chip)))) : MOCKITEMS.filter((item) => item.title.toLowerCase().includes(searchInput.toLowerCase()) && (!Array.isArray(selectedChips) || selectedChips.every(chip => item.tags.includes(chip))) && item.date === searchDate)
         );
         setSearchDisplay(() => searchInput);
     };
@@ -97,7 +105,7 @@ export default function EventsScreen({ route, navigation }){
                 <View>
                     <View style={styles.chipView}>
                         {CHIP_DATA.map( (tag) => {
-                            const isSelected = selectedChips.includes(tag.id);
+                            const isSelected = selectedChips?.includes(tag.id);
                         
                             return (
                                 <Chip 
@@ -116,28 +124,28 @@ export default function EventsScreen({ route, navigation }){
                     </View> 
                     <SafeAreaView style={styles.container}>
                         <View style={styles.content}>
-                        <Text style={styles.text}>
-                            {datePicked ? `Selected Date: ${searchDate}` : 'No date selected yet'}
-                        </Text>
-                        
-                        <Button 
-                            mode="contained" 
-                            onPress={() => setDateVisible(true)}
-                            icon="calendar"
-                        >
-                            Pick Date
-                        </Button>
+                            <Button style={styles.button}
+                                mode="contained" 
+                                onPress={() => setDateVisible(true)}
+                                icon="calendar"
+                            >
+                                Pick Date
+                            </Button>
 
-                        <DatePickerModal
-                            locale="en"
-                            mode="single"
-                            visible={dateVisible}
-                            onDismiss={dismissDate}
-                            date={date}
-                            onConfirm={confirmDate}
-                            label="Select Date" // Modal top header label
-                            saveLabel="Save" // Confirm button label
-                        />
+                            <Text style={styles.timeText}>
+                                {datePicked ? `Selected Date: ${searchDate}` : 'No date selected yet'}
+                            </Text>
+
+                            <DatePickerModal
+                                locale="en"
+                                mode="single"
+                                visible={dateVisible}
+                                onDismiss={dismissDate}
+                                date={date}
+                                onConfirm={confirmDate}
+                                label="Select Date" // Modal top header label
+                                saveLabel="Save" // Confirm button label
+                            />
                         </View>
                     </SafeAreaView>
                 </View>
@@ -171,7 +179,7 @@ export default function EventsScreen({ route, navigation }){
                                 </Text>
                                 <View style={styles.chipView}>
                                     {Object.values(item.tags).map(tag => {
-                                        const isSelected = selectedChips.includes(tag);
+                                        const isSelected = selectedChips?.includes(tag);
                     
                                         return (
                                             <Chip 
@@ -295,8 +303,13 @@ const styles = StyleSheet.create({
     },
     content: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'space-evenly',
         alignItems: 'center',
-        padding: 20,
+        flexDirection: 'row',
+        padding: 5,
+    },
+    timeText: {
+        paddingTop: 6,
+        color: '#7e8390'
     }
 })

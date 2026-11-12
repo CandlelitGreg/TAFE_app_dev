@@ -1,7 +1,8 @@
 //IMPORTS
-import { useState } from 'react';
-import { View, StyleSheet, ScrollView, TextInput } from 'react-native';
+import { useState, useCallback } from 'react';
+import { View, StyleSheet, ScrollView, TextInput, SafeAreaView } from 'react-native';
 import { Text, Button, Card, Chip, IconButton } from 'react-native-paper';
+import { DatePickerModal, registerTranslation, en } from 'react-native-paper-dates';
 import { MOCKITEMS, CHIP_DATA } from '../App';
 
 
@@ -9,20 +10,66 @@ import { MOCKITEMS, CHIP_DATA } from '../App';
 //FUNCTION Export OR Compenent to use <Tag/>
 export default function HomeScreen({ navigation }){
     const [chipIsOpen, setChipIsOpen] = useState(false);
-    // const [isDisplaying, setIsDisplaying] = useState(false);
+    const today = `${String(new Date().getDate()).padStart(2, '0')}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${new Date().getFullYear()}`;
     const [search, setSearch] = useState('');
     const [selectedChips, setSelectedChips] = useState([]);
+    const [date, setDate] = useState(new Date());
     const [datePicked, setDatePicked] = useState(false);
-    const [searchDate, setSearchDate] = useState(undefined || new Date())
+    const [searchDate, setSearchDate] = useState('');
+    const [dateVisible, setDateVisible] = useState(false);
+
+    const dismissDate = useCallback(() => {
+        setDateVisible(false);
+        setDatePicked(false);
+    }, []);
+
+    const generateDate = useCallback((params) => {
+        const day = String(params.date.getDate()).padStart(2, '0');
+        const month = String(params.date.getMonth() + 1).padStart(2, '0');
+        const year = params.date.getFullYear();
+        return `${day}/${month}/${year}`;
+    }, []);
+
+    const confirmDate = useCallback((params) => {
+        const formattedDate = generateDate({date: params.date});
+        setDatePicked(true);
+        setDateVisible(false);
+        setDate(params.date);
+        setSearchDate(formattedDate);
+        console.log(`date picked: ${params.date} -- date used: ${formattedDate}`);
+        setSelectedChips((prevSelected) => {
+            if (prevSelected?.includes('0') && formattedDate !== today) {
+                return prevSelected.filter((item) => item !== '0');
+            } else {
+                if (formattedDate === today) {
+                    setDatePicked(true);
+                    return [...prevSelected, '0'];
+                }
+            }
+        });   
+    }, []);
 
     const handleChipPress = (id) => {
         setSelectedChips((prevSelected) => {
-            if (prevSelected.includes(id)) {
+            if (prevSelected?.includes(id)) {
+                if (id === '0') {
+                    setDatePicked(false);
+                }
                 return prevSelected.filter((item) => item !== id);
             } else {
-                return [...prevSelected, id];
+                if (id === '0') {
+                    setDatePicked(true);
+                    setSearchDate(generateDate({date: new Date()}));
+                }
+                if (Array.isArray(prevSelected))
+                {
+                    return [...prevSelected, id];
+                } else {
+                    return [id];
+                }
+                
             }
-        });
+        });   
     };
 
     return (
@@ -42,7 +89,7 @@ export default function HomeScreen({ navigation }){
                     <Text style={{color: '#424754'}}>
                         Find and register for Community Events
                     </Text>
-                    <Button mode='contained' style={styles.button} onPress={() => navigation.navigate('Events', { search: '', searchedChips: ['0'] })}>
+                    <Button mode='contained' style={styles.button} onPress={() => navigation.navigate('Events', { search: '', searchedChips: ['0']})}>
                         <Text style={{color: '#424754', fontWeight: 'bold'}}>
                             View Today's Events
                         </Text>
@@ -58,77 +105,62 @@ export default function HomeScreen({ navigation }){
                 <IconButton
                     icon='magnify'
                     size={30}
-                    onPress={() => navigation.navigate('Events', { search: search, searchedChips: selectedChips })}
+                    onPress={() => navigation.navigate('Events', { search: search, searchedChips: selectedChips, searchedWithDate: datePicked, searchedDate: date })}
                     style={{position: 'absolute', right: '40px'}}
                 />
                 <IconButton onPress={() => setChipIsOpen(!chipIsOpen)} icon={!chipIsOpen ? 'chevron-down' : 'chevron-up'} style={{marginHorizontal: 0}}/>
             </View>
                 
             {chipIsOpen && (
-                <View style={styles.chipView}>
-                    {CHIP_DATA.map( (tag) => {
-                        const isSelected = selectedChips.includes(tag.id);
-                    
-                        return (
-                            <Chip 
-                                key={tag.id}
-                                selected={isSelected}
-                                style={[ isSelected ? styles.chipSelected : styles.chipUnselected, ]}
-                                showSelectedCheck={false}
-                                onPress={() => handleChipPress(tag.id)}
-                                mode={isSelected ? 'flat' : 'outlined'}
-                                textStyle={[ isSelected ? styles.chipSelectedText : styles.chipUnselectedText, ]}
-                            >
-                                    {tag.name}
-                            </Chip>
-                        );
-                    })}
-                </View> 
-            )}
-                {/* {isDisplaying && (
-                    <ScrollView>
-                        <Text variant='headlineSmall' style={{fontWeight: 'bold', color: '#000', fontSize: 16}} >
-                            Showing: Today - {MOCKITEMS.length} result{MOCKITEMS.length == 1 ? '' : 's'}:
-                        </Text>
-                        <ScrollView>
-                        {
-                            MOCKITEMS.map( item => (
-                                <Card
-                                    key={item.id}
-                                    style={styles.card}
-                                    onPress={() => navigation.navigate('Event Details', { item: item })}
+                <View>
+                    <View style={styles.chipView}>
+                        {CHIP_DATA.map( (tag) => {
+                            const isSelected = selectedChips?.includes(tag.id);
+                        
+                            return (
+                                <Chip 
+                                    key={tag.id}
+                                    selected={isSelected}
+                                    style={[ isSelected ? styles.chipSelected : styles.chipUnselected, ]}
+                                    showSelectedCheck={false}
+                                    onPress={() => handleChipPress(tag.id)}
+                                    mode={isSelected ? 'flat' : 'outlined'}
+                                    textStyle={[ isSelected ? styles.chipSelectedText : styles.chipUnselectedText, ]}
                                 >
-                                    <Card.Title title={item.title + ' || ' + item.time + ' || '+ item.location} titleStyle={{fontSize: 14, color: '#000000'}} />
-                                    <Card.Content style={{marginTop: 0}}>
-                                        <Text style={styles.innerCard} variant='bodyMedium'>
-                                            {'Spots remaining:     ' + item.spotsRemaining}
-                                        </Text>
-                                        <View style={styles.chipView}>
-                                            {Object.values(item.tags).map(tag => {
-                                                const isSelected = selectedChips.includes(tag);
-                            
-                                                return (
-                                                    <Chip 
-                                                        key={tag}
-                                                        selected={isSelected}
-                                                        style={[ isSelected ? styles.chipSelected : styles.chipUnselected, ]}
-                                                        showSelectedCheck={false}
-                                                        onPress={() => handleChipPress(tag)}
-                                                        mode={isSelected ? 'flat' : 'outlined'}
-                                                        textStyle={[ isSelected ? styles.chipSelectedText : styles.chipUnselectedText, ]}
-                                                    >
-                                                        {CHIP_DATA[tag].name}
-                                                    </Chip>
-                                                )
-                                            })}
-                                        </View>
-                                    </Card.Content>
-                                </Card>
-                            ))
-                        }
-                        </ScrollView>
-                    </ScrollView>
-                )} */}
+                                        {tag.name}
+                                </Chip>
+                            );
+                        })}
+
+                    </View> 
+                    <SafeAreaView style={styles.chipView}>
+                        <View style={styles.content}>
+                            <Button style={styles.button}
+                                mode="contained" 
+                                onPress={() => setDateVisible(true)}
+                                icon="calendar"
+                            >
+                                Pick Date
+                            </Button>
+
+                            <Text style={styles.timeText}>
+                                {datePicked ? `Selected Date: ${searchDate}` : 'No date selected yet'}
+                            </Text>
+
+                            <DatePickerModal
+                                locale="en"
+                                mode="single"
+                                visible={dateVisible}
+                                onDismiss={dismissDate}
+                                date={date}
+                                onConfirm={confirmDate}
+                                label="Select Date" // Modal top header label
+                                saveLabel="Save" // Confirm button label
+                            />
+                        </View>
+                    </SafeAreaView>
+                </View>
+            )}
                 
         </View>
     );
@@ -138,8 +170,6 @@ export default function HomeScreen({ navigation }){
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // justifyContent: 'center',
-        // alignItems: 'center',
         padding: 24,
         backgroundColor: '#F5F5F5'
     },
@@ -209,5 +239,16 @@ const styles = StyleSheet.create({
     headerView: {
         display: 'flex',
         flexDirection: 'horizontal'
+    },
+    content: {
+        flex: 1,
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+        flexDirection: 'row',
+        padding: 5,
+    },
+    timeText: {
+        paddingTop: 6,
+        color: '#7e8390'
     }
 })
