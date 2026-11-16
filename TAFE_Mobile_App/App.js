@@ -2,19 +2,22 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { Provider as PaperProvider, IconButton } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { useState } from 'react';
 
 import HomeScreen from './screens/HomeScreen';
 import DetailsScreen from './screens/DetailsScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import EventsScreen from './screens/EventsScreen';
 import RegisterScreen from './screens/RegisterScreen';
+import { SettingsProvider } from './contexts/SettingsContext';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 const date = new Date();
-const today = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+export const today = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+
 
 const UncheckedMOCKITEMS = [
     {
@@ -118,11 +121,17 @@ export const CHIP_DATA = [
     { id: '6', name: 'Family' }
 ]
 
+
+
 function HomeStack() {
   return (
     <Stack.Navigator
       screenOptions={( {navigation} ) => ({
-        headerRight: () => (
+        headerRight: () => {
+          const route = useRoute();
+          if (route.name !== 'Settings')
+          {
+          (
           <IconButton
             type='button'
             icon='cog'
@@ -130,7 +139,7 @@ function HomeStack() {
             onPress={() => navigation.navigate('Settings')}
             style={{position: 'absolute', top: '6px', right: '10px'}}
           />
-        ),
+        )}},
         headerStyle: { backgroundColor: '#3CA6E5' },
         headerTintColor: '#fff'
       })}
@@ -138,27 +147,43 @@ function HomeStack() {
       <Stack.Screen name='Home' component={HomeScreen} options={{headerShown: false}}/>
       <Stack.Screen name='Event Details' component={DetailsScreen} options={{headerShown: true}}/>
       <Stack.Screen name='Events' component={EventsScreen} options={{headerShown: true}}/>
-      <Stack.Screen name='Settings' component={SettingsScreen} options={{headerShown: false}}/>
+      <Stack.Screen name='Settings' component={SettingsScreen} options={{headerShown: true}}/>
       <Stack.Screen name='Register' component={RegisterScreen} options={{headerShown: true}}/>
     </Stack.Navigator>
   );
 }
 
 export default function App() {
+  const [settings, setSettings] = useState([]);
+
+  const editSettings = (setting) => {
+    setSettings((prevSelected) => {
+      if (prevSelected.includes(setting)) {
+        return prevSelected.filter((item) => item !== setting);
+      } else {
+        return [...prevSelected, setting];
+      }
+    });   
+  };
+
+
+
   return (
-    <PaperProvider>
-      <NavigationContainer>
-        <Tab.Navigator
-          screenOptions={{
-            tabBarActiveTintColor: '#3CA6E5',
-            tabBarInactiveTintColor: '#999',
-            headerStyle: { backgroundColor: '#3CA6E5' },
-            headerTintColor: '#fff'
-          }}
-        >
-          <Tab.Screen name='Home' component={HomeStack} options={{headerShown: false}} />
-        </Tab.Navigator>
-      </NavigationContainer>
-    </PaperProvider>
+    <SettingsProvider>
+      <PaperProvider>
+        <NavigationContainer>
+          <Tab.Navigator
+            screenOptions={{
+              tabBarActiveTintColor: '#3CA6E5',
+              tabBarInactiveTintColor: '#999',
+              headerStyle: { backgroundColor: '#3CA6E5' },
+              headerTintColor: '#fff'
+            }}
+          >
+            <Tab.Screen name='Home' component={HomeStack} options={{headerShown: false}} />
+          </Tab.Navigator>
+        </NavigationContainer>
+      </PaperProvider>
+    </SettingsProvider>
   )
 }

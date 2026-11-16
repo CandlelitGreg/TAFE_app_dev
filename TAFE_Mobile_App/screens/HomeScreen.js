@@ -3,14 +3,13 @@ import { useState, useCallback } from 'react';
 import { View, StyleSheet, ScrollView, TextInput, SafeAreaView } from 'react-native';
 import { Text, Button, Card, Chip, IconButton } from 'react-native-paper';
 import { DatePickerModal, registerTranslation, en } from 'react-native-paper-dates';
-import { MOCKITEMS, CHIP_DATA } from '../App';
+import { MOCKITEMS, CHIP_DATA, today } from '../App';
 
 
 
 //FUNCTION Export OR Compenent to use <Tag/>
 export default function HomeScreen({ navigation }){
     const [chipIsOpen, setChipIsOpen] = useState(false);
-    const today = `${String(new Date().getDate()).padStart(2, '0')}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${new Date().getFullYear()}`;
     const [search, setSearch] = useState('');
     const [selectedChips, setSelectedChips] = useState([]);
     const [date, setDate] = useState(new Date());

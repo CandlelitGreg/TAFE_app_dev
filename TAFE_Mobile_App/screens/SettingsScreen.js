@@ -1,13 +1,57 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Switch } from 'react-native';
 import { Text } from 'react-native-paper'
+import { useState } from 'react';
+import { useSettings } from '../contexts/SettingsContext';
 
-export default function SettingsScreen() {
+export default function SettingsScreen({ navigation }) {
+    const { settings, updateSetting } = useSettings();
+
     return (
         <View style={styles.container}>
             <Text variant='headlineMedium' style={styles.title}>
                 Placeholder for settings
             </Text>
-            {/* Toggle for Dark Mode */}
+            <View style={styles.content}>
+                <Text style={styles.label}>
+                    {/* {darkModeStatus ? 'Dark Mode On' : 'Dark Mode Off'} */}
+                    Dark Mode:
+                </Text>
+                <Switch
+                    trackColor={{ false: '#767577', true: '#3CA6E5' }}
+                    thumbColor={settings.darkMode ? '#DDAB5E' : '#f4f3f4'}
+                    activeThumbColor={settings.darkMode ? '#DDAB5E' : '#f4f3f4'}
+                    onValueChange={(val) => updateSetting('darkMode', val)}
+                    value={settings.darkMode}
+                />
+            </View>
+            <View style={styles.content}>
+                <Text style={styles.label}>
+                    {/* {darkModeStatus ? 'Dark Mode On' : 'Dark Mode Off'} */}
+                    Large Fonts:
+                </Text>
+                <Switch
+                    trackColor={{ false: '#767577', true: '#3CA6E5' }}
+                    thumbColor={settings.largeFonts ? '#DDAB5E' : '#f4f3f4'}
+                    activeThumbColor={settings.largeFonts ? '#DDAB5E' : '#f4f3f4'}
+                    onValueChange={(val) => updateSetting('largeFonts', val)}
+                    value={settings.largeFonts}
+                />
+            </View>
+            <View style={styles.content}>
+                <Text style={styles.label}>
+                    {/* {darkModeStatus ? 'Dark Mode On' : 'Dark Mode Off'} */}
+                    Sound Effects:
+                </Text>
+                <Switch
+                    trackColor={{ false: '#767577', true: '#3CA6E5' }}
+                    thumbColor={settings.soundEffects ? '#DDAB5E' : '#f4f3f4'}
+                    activeThumbColor={settings.soundEffects ? '#DDAB5E' : '#f4f3f4'}
+                    onValueChange={(val) => updateSetting('soundEffects', val)}
+                    value={settings.soundEffects}
+                />
+            </View>
+            
+            
 
             {/* Toggle for large text */}
 
@@ -18,9 +62,6 @@ export default function SettingsScreen() {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        // justifyContent: 'center',
-        // alignItems: 'center',
         padding: 24,
         backgroundColor: '#F5F5F5'
     },
@@ -82,5 +123,16 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'horizontal'
 
+    },
+    content: {
+        flex: 1,
+        justifyContent: 'space-evenly',
+        flexDirection: 'row',
+        padding: 25,
+    },
+    label: {
+        paddingTop: 2,
+        fontWeight: 'bold',
+        color: '#010c31'
     }
 })

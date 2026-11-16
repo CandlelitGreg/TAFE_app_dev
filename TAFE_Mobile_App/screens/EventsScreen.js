@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react';
 import { View, StyleSheet, ScrollView, TextInput, SafeAreaView } from 'react-native';
 import { Text, Button, Card, Chip, IconButton, Provider as PaperProvider } from 'react-native-paper';
 import { DatePickerModal, registerTranslation, en } from 'react-native-paper-dates';
-import { MOCKITEMS, CHIP_DATA } from '../App';
+import { MOCKITEMS, CHIP_DATA, today } from '../App';
 
 
 registerTranslation('en', en);
@@ -16,7 +16,6 @@ export default function EventsScreen({ route, navigation }){
     const { searchedChips } = route.params || {};
     const { searchedWithDate } = route.params || {};
     const { searchedDate } = route.params || {};
-    const today = `${String(new Date().getDate()).padStart(2, '0')}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${new Date().getFullYear()}`;
     const [chipIsOpen, setChipIsOpen] = useState(false);
     const [searchInput, setSearchInput] = useState(search || '');
     const [selectedChips, setSelectedChips] = useState(searchedChips || []);
@@ -67,17 +66,21 @@ export default function EventsScreen({ route, navigation }){
 
     const handleChipPress = (id) => {
         setSelectedChips((prevSelected) => {
-            if (prevSelected.includes(id)) {
+            if (prevSelected?.includes(id)) {
                 if (id === '0') {
                     setDatePicked(false);
                 }
-                return prevSelected.filter((item) => item !== id);
+                return prevSelected?.filter((item) => item !== id);
             } else {
                 if (id === '0') {
                     setDatePicked(true);
                     setSearchDate(generateDate({date: new Date()}));
                 }
-                return [...prevSelected, id];
+                if (prevSelected?.length > 0)
+                {
+                    return [...prevSelected, id];
+                }
+                return [id];
             }
         });   
     };
@@ -231,7 +234,7 @@ const styles = StyleSheet.create({
     button: {
         marginTop: 8,
         backgroundColor: '#3CA6E5',
-        borderColor: '#000',
+        borderColor: '#000000',
         borderWidth: 2
     },
     card: {
