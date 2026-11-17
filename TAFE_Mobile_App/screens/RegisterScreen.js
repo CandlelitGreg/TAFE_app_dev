@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { View, StyleSheet, TextInput } from 'react-native';
+import { View, StyleSheet, TextInput, ScrollView } from 'react-native';
 import { Text, Card, Chip, Button, IconButton } from 'react-native-paper'
 import { MOCKITEMS, CHIP_DATA } from '../App';
 import { useSettings } from '../contexts/SettingsContext';
@@ -15,6 +15,7 @@ export default function RegisterScreen({route, navigation}) {
 
 
     return (
+        <ScrollView>
         <View style={settings.activeStyle.container}>
             <Card
                 key={item.id}
@@ -102,6 +103,7 @@ export default function RegisterScreen({route, navigation}) {
             </Card>
             
         </View>
+        </ScrollView>
     );
 }
 

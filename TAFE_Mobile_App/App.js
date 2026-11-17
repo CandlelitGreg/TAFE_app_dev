@@ -23,7 +23,7 @@ const UncheckedMOCKITEMS = [
     {
         id: '1',
         title: 'Random book',
-        description: 'random book desc',
+        description: 'Really, really, really long description of a definitely random and totally real book despite the fact this is supposed to be an event application for the mobile phone and tablet',
         location: 'Community Hall',
         date: '12/12/2012',
         time: '08:30-09:15',

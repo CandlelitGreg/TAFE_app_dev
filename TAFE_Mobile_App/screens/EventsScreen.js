@@ -88,6 +88,13 @@ export default function EventsScreen({ route, navigation }){
         });   
     };
 
+    const resetFilters = () => {
+        setDatePicked(false);
+        setSelectedChips([]);
+        setSearchDisplay('');
+        setSearchedEvents(MOCKITEMS);
+    }
+
     return (
         <View style={settings.activeStyle.container}>
             <View style={settings.activeStyle.chipView}>
@@ -161,6 +168,14 @@ export default function EventsScreen({ route, navigation }){
                     Showing: {searchDisplay === '' ? 'All events' : `Results matching "${searchDisplay}"`} - {searchedEvents.length} result{searchedEvents.length == 1 ? '' : 's'}:
                 </Text>
                 <ScrollView>
+                { (searchedEvents.length) < 1 && (
+                            <Button style={settings.activeStyle.button}
+                                mode="contained" 
+                                onPress={() => resetFilters()}>
+                                Reset filters
+                            </Button>
+                        )
+                    }
                 {
                     searchedEvents.map( item => (
                         <Card
