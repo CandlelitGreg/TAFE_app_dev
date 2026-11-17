@@ -141,7 +141,7 @@ function HomeStack() {
           />
         )}},
         headerStyle: { backgroundColor: '#3CA6E5' },
-        headerTintColor: '#fff'
+        headerTintColor: '#ffffff'
       })}
     >
       <Stack.Screen name='Home' component={HomeScreen} options={{headerShown: false}}/>
@@ -177,7 +177,7 @@ export default function App() {
               tabBarActiveTintColor: '#3CA6E5',
               tabBarInactiveTintColor: '#999',
               headerStyle: { backgroundColor: '#3CA6E5' },
-              headerTintColor: '#fff'
+              headerTintColor: '#ffffff'
             }}
           >
             <Tab.Screen name='Home' component={HomeStack} options={{headerShown: false}} />

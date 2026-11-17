@@ -1,45 +1,48 @@
 import { View, StyleSheet } from 'react-native';
 import { Text, Card, Chip, Button, IconButton } from 'react-native-paper'
 import { MOCKITEMS, CHIP_DATA } from '../App';
+import { useSettings } from '../contexts/SettingsContext';
 
 
 
 export default function DetailsScreen({route, navigation}) {
+    const { settings, updateSetting } = useSettings();
+
     const { item } = route.params;
     return (
-        <View style={styles.container}>
-            <Card style={styles.card}>
-                <Card.Title title={item.title} titleStyle={{fontSize: 16, color: '#000000', fontWeight: 'bold'}}/>
+        <View style={settings.activeStyle.container}>
+            <Card style={settings.activeStyle.card}>
+                <Card.Title title={item.title} titleStyle={settings.activeStyle.searchFiltered}/>
                 <Card.Content style={{marginTop: 0}}>
-                    <Text style={styles.innerCard} variant='bodyMedium'>
+                    <Text style={settings.activeStyle.innerCard} variant='bodyMedium'>
                         {item.description}
                     </Text>
                 </Card.Content>
             </Card>
-            <Text style={styles.cardDetails} variant='bodyMedium'>
+            <Text style={settings.activeStyle.cardDetails} variant='bodyMedium'>
                 {item.location}
             </Text>
-            <View style={styles.chipView}>
-                <Text style={styles.cardDetails} variant='bodyMedium'>
+            <View style={settings.activeStyle.chipView}>
+                <Text style={settings.activeStyle.cardDetails} variant='bodyMedium'>
                     {item.date}
                 </Text>
-                <Text style={styles.cardDetails} variant='bodyMedium'>
+                <Text style={settings.activeStyle.cardDetails} variant='bodyMedium'>
                     {item.time}
                 </Text>
             </View>
-            <Text style={[styles.cardDetails, {textAlign: 'right'}]} variant='bodyMedium'>
+            <Text style={[settings.activeStyle.cardDetails, {textAlign: 'right'}]} variant='bodyMedium'>
                 {'Spots remaining:     ' + item.spotsRemaining}
             </Text>
-            <View style={styles.chipView}>
+            <View style={settings.activeStyle.chipView}>
                 {Object.values(item.tags).map(tag => (
-                    <Chip style={styles.chip}>
-                        <Text style={styles.chipText}>
+                    <Chip style={settings.activeStyle.chip}>
+                        <Text style={settings.activeStyle.chipText}>
                             {CHIP_DATA[tag].name}
                         </Text>
                     </Chip>
                 ))}
             </View>
-            <Button mode='contained' style={styles.button}  onPress={() => navigation.navigate('Register', {item: item})}>
+            <Button mode='contained' style={settings.activeStyle.button}  onPress={() => navigation.navigate('Register', {item: item})}>
                 <Text style={{color: '#fff', fontWeight: 'bold'}}>
                     Register
                 </Text>

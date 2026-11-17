@@ -4,6 +4,7 @@ import { View, StyleSheet, ScrollView, TextInput, SafeAreaView } from 'react-nat
 import { Text, Button, Card, Chip, IconButton, Provider as PaperProvider } from 'react-native-paper';
 import { DatePickerModal, registerTranslation, en } from 'react-native-paper-dates';
 import { MOCKITEMS, CHIP_DATA, today } from '../App';
+import { useSettings } from '../contexts/SettingsContext';
 
 
 registerTranslation('en', en);
@@ -12,6 +13,8 @@ registerTranslation('en', en);
 
 //FUNCTION Export OR Compenent to use <Tag/>
 export default function EventsScreen({ route, navigation }){
+    const { settings, updateSetting } = useSettings();
+
     const { search } = route.params || {};
     const { searchedChips } = route.params || {};
     const { searchedWithDate } = route.params || {};
@@ -86,11 +89,11 @@ export default function EventsScreen({ route, navigation }){
     };
 
     return (
-        <View style={styles.container}>
-            <View style={styles.chipView}>
+        <View style={settings.activeStyle.container}>
+            <View style={settings.activeStyle.chipView}>
                 {/* Fix textbox text colour */}
                 <TextInput 
-                    style={styles.eventsSearch}
+                    style={settings.activeStyle.eventsSearch}
                     value={searchInput}
                     onChangeText={setSearchInput}
                     >
@@ -106,7 +109,7 @@ export default function EventsScreen({ route, navigation }){
             
             {chipIsOpen && (
                 <View>
-                    <View style={styles.chipView}>
+                    <View style={settings.activeStyle.chipView}>
                         {CHIP_DATA.map( (tag) => {
                             const isSelected = selectedChips?.includes(tag.id);
                         
@@ -114,20 +117,20 @@ export default function EventsScreen({ route, navigation }){
                                 <Chip 
                                     key={tag.id}
                                     selected={isSelected}
-                                    style={[ isSelected ? styles.chipSelected : styles.chipUnselected, ]}
+                                    style={[ isSelected ? settings.activeStyle.chipSelected : settings.activeStyle.chipUnselected, ]}
                                     showSelectedCheck={false}
                                     onPress={() => handleChipPress(tag.id)}
                                     mode={isSelected ? 'flat' : 'outlined'}
-                                    textStyle={[ isSelected ? styles.chipSelectedText : styles.chipUnselectedText, ]}
+                                    textStyle={[ isSelected ? settings.activeStyle.chipSelectedText : settings.activeStyle.chipUnselectedText, ]}
                                 >
                                         {tag.name}
                                 </Chip>
                             );
                         })}
                     </View> 
-                    <SafeAreaView style={styles.container}>
-                        <View style={styles.content}>
-                            <Button style={styles.button}
+                    <SafeAreaView style={settings.activeStyle.container}>
+                        <View style={settings.activeStyle.content}>
+                            <Button style={settings.activeStyle.button}
                                 mode="contained" 
                                 onPress={() => setDateVisible(true)}
                                 icon="calendar"
@@ -135,7 +138,7 @@ export default function EventsScreen({ route, navigation }){
                                 Pick Date
                             </Button>
 
-                            <Text style={styles.timeText}>
+                            <Text style={settings.activeStyle.timeText}>
                                 {datePicked ? `Selected Date: ${searchDate}` : 'No date selected yet'}
                             </Text>
 
@@ -154,7 +157,7 @@ export default function EventsScreen({ route, navigation }){
                 </View>
             )}
             <ScrollView>
-                <Text variant='headlineSmall' style={{fontWeight: 'bold', color: '#000', fontSize: 16}} >
+                <Text variant='headlineSmall' style={settings.activeStyle.searchFiltered} >
                     Showing: {searchDisplay === '' ? 'All events' : `Results matching "${searchDisplay}"`} - {searchedEvents.length} result{searchedEvents.length == 1 ? '' : 's'}:
                 </Text>
                 <ScrollView>
@@ -162,25 +165,25 @@ export default function EventsScreen({ route, navigation }){
                     searchedEvents.map( item => (
                         <Card
                             key={item.id}
-                            style={styles.card}
+                            style={settings.activeStyle.card}
                             onPress={() => navigation.navigate('Event Details', { item: item })}
                         >
                             <Card.Content style={{marginTop: 0}}>
-                                <Text style={styles.cardTitle}>
+                                <Text style={settings.activeStyle.cardTitle}>
                                     {item.title}
                                 </Text>
-                                <View style={styles.cardHeaders}>
-                                    <Text style={styles.cardHeading}>
+                                <View style={settings.activeStyle.cardHeaders}>
+                                    <Text style={settings.activeStyle.cardHeading}>
                                         {item.location}
                                     </Text>
-                                    <Text style={styles.cardHeading}>
+                                    <Text style={settings.activeStyle.cardHeading}>
                                         {item.time}
                                     </Text>
                                 </View>
-                                <Text style={styles.innerCard} variant='bodyMedium'>
+                                <Text style={settings.activeStyle.innerCard} variant='bodyMedium'>
                                     {'Spots remaining:     ' + item.spotsRemaining}
                                 </Text>
-                                <View style={styles.chipView}>
+                                <View style={settings.activeStyle.chipView}>
                                     {Object.values(item.tags).map(tag => {
                                         const isSelected = selectedChips?.includes(tag);
                     
@@ -188,11 +191,11 @@ export default function EventsScreen({ route, navigation }){
                                             <Chip 
                                                 key={tag}
                                                 selected={isSelected}
-                                                style={[ isSelected ? styles.chipSelected : styles.chipUnselected, ]}
+                                                style={[ isSelected ? settings.activeStyle.chipSelected : settings.activeStyle.chipUnselected, ]}
                                                 showSelectedCheck={false}
                                                 onPress={() => handleChipPress(tag)}
                                                 mode={isSelected ? 'flat' : 'outlined'}
-                                                textStyle={[ isSelected ? styles.chipSelectedText : styles.chipUnselectedText, ]}
+                                                textStyle={[ isSelected ? settings.activeStyle.chipSelectedText : settings.activeStyle.chipUnselectedText, ]}
                                             >
                                                 {CHIP_DATA[tag].name}
                                             </Chip>
@@ -236,6 +239,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#3CA6E5',
         borderColor: '#000000',
         borderWidth: 2
+    },
+    searchFiltered: {
+        fontWeight: 'bold', 
+        color: '#000', 
+        fontSize: 16
     },
     card: {
         marginBottom: 10,
@@ -295,6 +303,117 @@ const styles = StyleSheet.create({
         marginTop: 5,
         backgroundColor: '#fff',
         color: '#000',
+        borderColor: '#DDAB5E',
+        borderWidth: 1.5,
+        paddingHorizontal: 10
+    },
+    headerView: {
+        display: 'flex',
+        flexDirection: 'horizontal'
+
+    },
+    content: {
+        flex: 1,
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+        flexDirection: 'row',
+        padding: 5,
+    },
+    timeText: {
+        paddingTop: 6,
+        color: '#7e8390'
+    }
+})
+
+const darkStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+        // justifyContent: 'center',
+        // alignItems: 'center',
+        padding: 24,
+        backgroundColor: '#010c31'
+    },
+    title: {
+        marginBottom: 12,
+        marginRight: 20,
+        fontWeight: 'bold',
+        color: '#ffffff',
+        fontSize: 27
+    },
+    subtitle: {
+        textAlign: 'center',
+        marginBottom: 24,
+        color: '#010c31'
+    },
+    button: {
+        marginTop: 8,
+        backgroundColor: '#3CA6E5',
+        borderColor: '#ffffff',
+        borderWidth: 2
+    },
+    searchFiltered: {
+        fontWeight: 'bold', 
+        color: '#ffffff', 
+        fontSize: 16
+    },
+    card: {
+        marginBottom: 10,
+        marginRight: 8,
+        elevation: 3,
+        backgroundColor: '#010c31',
+        borderColor: '#DDAB5E',
+        borderWidth: 1.5
+    },
+    cardTitle: {
+        fontWeight: 'bold',
+        color: '#ffffff',
+        fontSize: 20,
+        paddingBottom: 5
+    },
+    cardHeading: {
+        flex: 1,
+        fontWeight: 'bold',
+        color: '#ffffff',
+        paddingVertical: 5
+    },
+    cardHeaders: {
+        // display: flex,
+        // justifyContent: 'space-evenly',
+        flexDirection: 'row'
+    },
+    innerCard: {
+        fontSize: 12,
+        color: '#ffffff'
+    },
+    chipView: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        flexDirection: 'row',
+        gap: '5px'
+    },
+    chipSelected: {
+        marginTop: 3,
+        backgroundColor: '#3CA6E5'
+    },
+    chipUnselected: {
+        marginTop: 3,
+        backgroundColor: '#010c31',
+        borderColor: '#DDAB5E'
+    },
+    chipSelectedText: {
+        color: '#ffffff',
+        fontWeight: 'bold'
+    },
+    chipUnselectedText: {
+        color: '#ffffff',
+        fontWeight: 'bold'
+    },
+    eventsSearch: {
+        flex: 1,
+        fontSize: 'small',
+        marginTop: 5,
+        backgroundColor: '#000000',
+        color: '#ffffff',
         borderColor: '#DDAB5E',
         borderWidth: 1.5,
         paddingHorizontal: 10

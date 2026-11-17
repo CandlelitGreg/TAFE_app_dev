@@ -7,55 +7,51 @@ export default function SettingsScreen({ navigation }) {
     const { settings, updateSetting } = useSettings();
 
     return (
-        <View style={styles.container}>
-            <Text variant='headlineMedium' style={styles.title}>
-                Placeholder for settings
-            </Text>
-            <View style={styles.content}>
-                <Text style={styles.label}>
-                    {/* {darkModeStatus ? 'Dark Mode On' : 'Dark Mode Off'} */}
-                    Dark Mode:
+        <View style={settings.activeStyle.container}>
+            <View style={settings.activeStyle.settingsContainer}>
+                <Text variant='headlineMedium' style={settings.activeStyle.title}>
+                    Placeholder for settings
                 </Text>
-                <Switch
-                    trackColor={{ false: '#767577', true: '#3CA6E5' }}
-                    thumbColor={settings.darkMode ? '#DDAB5E' : '#f4f3f4'}
-                    activeThumbColor={settings.darkMode ? '#DDAB5E' : '#f4f3f4'}
-                    onValueChange={(val) => updateSetting('darkMode', val)}
-                    value={settings.darkMode}
-                />
+                <View style={settings.activeStyle.settingsContent}>
+                    <Text style={settings.activeStyle.label}>
+                        {/* {darkModeStatus ? 'Dark Mode On' : 'Dark Mode Off'} */}
+                        Dark Mode:
+                    </Text>
+                    <Switch
+                        trackColor={{ false: '#767577', true: '#3CA6E5' }}
+                        thumbColor={settings.darkMode ? '#DDAB5E' : '#f4f3f4'}
+                        activeThumbColor={settings.darkMode ? '#DDAB5E' : '#f4f3f4'}
+                        onValueChange={(val) => updateSetting('darkMode', val)}
+                        value={settings.darkMode}
+                    />
+                </View>
+                <View style={settings.activeStyle.settingsContent}>
+                    <Text style={settings.activeStyle.label}>
+                        {/* {darkModeStatus ? 'Dark Mode On' : 'Dark Mode Off'} */}
+                        Large Fonts:
+                    </Text>
+                    <Switch
+                        trackColor={{ false: '#767577', true: '#3CA6E5' }}
+                        thumbColor={settings.largeFonts ? '#DDAB5E' : '#f4f3f4'}
+                        activeThumbColor={settings.largeFonts ? '#DDAB5E' : '#f4f3f4'}
+                        onValueChange={(val) => updateSetting('largeFonts', val)}
+                        value={settings.largeFonts}
+                    />
+                </View>
+                <View style={settings.activeStyle.settingsContent}>
+                    <Text style={settings.activeStyle.label}>
+                        {/* {darkModeStatus ? 'Dark Mode On' : 'Dark Mode Off'} */}
+                        Sound Effects:
+                    </Text>
+                    <Switch
+                        trackColor={{ false: '#767577', true: '#3CA6E5' }}
+                        thumbColor={settings.soundEffects ? '#DDAB5E' : '#f4f3f4'}
+                        activeThumbColor={settings.soundEffects ? '#DDAB5E' : '#f4f3f4'}
+                        onValueChange={(val) => updateSetting('soundEffects', val)}
+                        value={settings.soundEffects}
+                    />
+                </View>
             </View>
-            <View style={styles.content}>
-                <Text style={styles.label}>
-                    {/* {darkModeStatus ? 'Dark Mode On' : 'Dark Mode Off'} */}
-                    Large Fonts:
-                </Text>
-                <Switch
-                    trackColor={{ false: '#767577', true: '#3CA6E5' }}
-                    thumbColor={settings.largeFonts ? '#DDAB5E' : '#f4f3f4'}
-                    activeThumbColor={settings.largeFonts ? '#DDAB5E' : '#f4f3f4'}
-                    onValueChange={(val) => updateSetting('largeFonts', val)}
-                    value={settings.largeFonts}
-                />
-            </View>
-            <View style={styles.content}>
-                <Text style={styles.label}>
-                    {/* {darkModeStatus ? 'Dark Mode On' : 'Dark Mode Off'} */}
-                    Sound Effects:
-                </Text>
-                <Switch
-                    trackColor={{ false: '#767577', true: '#3CA6E5' }}
-                    thumbColor={settings.soundEffects ? '#DDAB5E' : '#f4f3f4'}
-                    activeThumbColor={settings.soundEffects ? '#DDAB5E' : '#f4f3f4'}
-                    onValueChange={(val) => updateSetting('soundEffects', val)}
-                    value={settings.soundEffects}
-                />
-            </View>
-            
-            
-
-            {/* Toggle for large text */}
-
-            {/* Toggle for sound effects */}
         </View>
     );
 }

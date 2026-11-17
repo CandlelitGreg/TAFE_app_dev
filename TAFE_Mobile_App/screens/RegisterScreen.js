@@ -2,10 +2,12 @@ import { useState, useCallback } from 'react';
 import { View, StyleSheet, TextInput } from 'react-native';
 import { Text, Card, Chip, Button, IconButton } from 'react-native-paper'
 import { MOCKITEMS, CHIP_DATA } from '../App';
-
+import { useSettings } from '../contexts/SettingsContext';
 
 
 export default function RegisterScreen({route, navigation}) {
+    const { settings, updateSetting } = useSettings();
+
     const { item } = route.params;
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -13,32 +15,32 @@ export default function RegisterScreen({route, navigation}) {
 
 
     return (
-        <View style={styles.container}>
+        <View style={settings.activeStyle.container}>
             <Card
                 key={item.id}
-                style={styles.card}
+                style={settings.activeStyle.card}
             >
-                <Card.Title title={item.title} titleStyle={{fontSize: 20, color: '#000000', fontWeight: 'bold'}} />
+                <Card.Title title={item.title} titleStyle={settings.activeStyle.cardTitle} />
                 <Card.Content>
-                    <Text style={styles.innerCard} variant='bodyMedium'>
+                    <Text style={settings.activeStyle.innerCard} variant='bodyMedium'>
                         {item.description}
                     </Text>
-                    <Text style={styles.innerCard} variant='bodyMedium'>
+                    <Text style={settings.activeStyle.innerCard} variant='bodyMedium'>
                         {'Spots remaining:     ' + item.spotsRemaining}
                     </Text>
-                    <Text style={styles.cardDetails} variant='bodyMedium'>
+                    <Text style={settings.activeStyle.registerCardDetails} variant='bodyMedium'>
                         {item.location}
                     </Text>
-                    <Text style={styles.cardDetails} variant='bodyMedium'>
+                    <Text style={settings.activeStyle.registerCardDetails} variant='bodyMedium'>
                         {item.time + ' || '+ item.date}
                     </Text>
-                    <View style={styles.chipView}>
+                    <View style={settings.activeStyle.chipView}>
                         {Object.values(item.tags).map(tag => 
                                 <Chip 
                                     key={tag}
-                                    style={styles.chip}
+                                    style={settings.activeStyle.chip}
                                     mode={'flat'}
-                                    textStyle={styles.chipText}
+                                    textStyle={settings.activeStyle.chipText}
                                 >
                                     {CHIP_DATA[tag].name}
                                 </Chip>
@@ -49,50 +51,50 @@ export default function RegisterScreen({route, navigation}) {
             </Card>
             <Card
                 key={item.id}
-                style={styles.card}
+                style={settings.activeStyle.card}
             >
                 <Card.Content>
                     <View>
-                        <Text style={styles.overTextInputText}>
+                        <Text style={settings.activeStyle.overTextInputText}>
                             Full Name
                         </Text>
                         <TextInput 
-                            style={styles.eventsSearch}
+                            style={settings.activeStyle.registerInput}
                             value={name}
                             onChangeText={setName}>
                         </TextInput>
-                        <Text style={styles.underTextInputText}>
+                        <Text style={settings.activeStyle.underTextInputText}>
                             Name is required
                         </Text>
                     </View>
                     <View>
-                        <Text style={styles.overTextInputText}>
+                        <Text style={settings.activeStyle.overTextInputText}>
                             Email
                         </Text>
                         <TextInput 
-                            style={styles.eventsSearch}
+                            style={settings.activeStyle.registerInput}
                             value={email}
                             onChangeText={setEmail}>
                         </TextInput>
-                        <Text style={styles.underTextInputText}>
+                        <Text style={settings.activeStyle.underTextInputText}>
                             Enter a valid email
                         </Text>
                     </View>
                     <View>
-                        <Text style={styles.overTextInputText}>
+                        <Text style={settings.activeStyle.overTextInputText}>
                             Phone
                         </Text>
                         <TextInput 
-                            style={styles.eventsSearch}
+                            style={settings.activeStyle.registerInput}
                             value={phone}
                             onChangeText={setPhone}>
                         </TextInput>
-                        <Text style={styles.underTextInputText}>
+                        <Text style={settings.activeStyle.underTextInputText}>
                             (optional)
                         </Text>
                     </View>
-                    <Button mode='contained' style={styles.button}  onPress={() => setIsDisplaying(!isDisplaying)}>
-                        <Text style={{color: '#fff', fontWeight: 'bold'}}>
+                    <Button mode='contained' style={settings.activeStyle.button}  onPress={() => setIsDisplaying(!isDisplaying)}>
+                        <Text style={settings.activeStyle.buttonText}>
                             Submit Registration
                         </Text>
                     </Button>

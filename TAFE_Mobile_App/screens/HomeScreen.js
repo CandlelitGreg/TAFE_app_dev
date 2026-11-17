@@ -4,11 +4,14 @@ import { View, StyleSheet, ScrollView, TextInput, SafeAreaView } from 'react-nat
 import { Text, Button, Card, Chip, IconButton } from 'react-native-paper';
 import { DatePickerModal, registerTranslation, en } from 'react-native-paper-dates';
 import { MOCKITEMS, CHIP_DATA, today } from '../App';
+import { useSettings } from '../contexts/SettingsContext';
 
 
 
 //FUNCTION Export OR Compenent to use <Tag/>
 export default function HomeScreen({ navigation }){
+    const { settings, updateSetting } = useSettings();
+
     const [chipIsOpen, setChipIsOpen] = useState(false);
     const [search, setSearch] = useState('');
     const [selectedChips, setSelectedChips] = useState([]);
@@ -72,8 +75,8 @@ export default function HomeScreen({ navigation }){
     };
 
     return (
-        <View style={styles.container}>
-            <Text variant='headlineMedium' style={styles.title} >
+        <View style={settings.activeStyle.container}>
+            <Text variant='headlineMedium' style={settings.activeStyle.title} >
                 Elevate Horizon Connect
             </Text>
             <IconButton
@@ -82,22 +85,22 @@ export default function HomeScreen({ navigation }){
                 onPress={() => navigation.navigate('Settings')}
                 style={{position: 'absolute', top: '18px', right: '10px'}}
             />
-            <Card style={styles.card}>
-                <Card.Title title='Welcome' titleStyle={{fontWeight: 'bold', fontSize: 26, color: '#424754'}}/>
+            <Card style={settings.activeStyle.card}>
+                <Card.Title title='Welcome' titleStyle={settings.activeStyle.smallCardTitle}/>
                 <Card.Content>
-                    <Text style={{color: '#424754'}}>
+                    <Text style={settings.activeStyle.cardText}>
                         Find and register for Community Events
                     </Text>
-                    <Button mode='contained' style={styles.button} onPress={() => navigation.navigate('Events', { search: '', searchedChips: ['0']})}>
-                        <Text style={{color: '#424754', fontWeight: 'bold'}}>
+                    <Button mode='contained' style={settings.activeStyle.button} onPress={() => navigation.navigate('Events', { search: '', searchedChips: ['0']})}>
+                        <Text style={settings.activeStyle.buttonText}>
                             View Today's Events
                         </Text>
                     </Button>
                 </Card.Content>
             </Card>
-            <View style={styles.chipView}>
+            <View style={settings.activeStyle.chipView}>
                 <TextInput 
-                    style={styles.eventsSearch}
+                    style={settings.activeStyle.eventsSearch}
                     value={search}
                     onChangeText={setSearch}>
                 </TextInput>
@@ -112,7 +115,7 @@ export default function HomeScreen({ navigation }){
                 
             {chipIsOpen && (
                 <View>
-                    <View style={styles.chipView}>
+                    <View style={settings.activeStyle.chipView}>
                         {CHIP_DATA.map( (tag) => {
                             const isSelected = selectedChips?.includes(tag.id);
                         
@@ -120,11 +123,11 @@ export default function HomeScreen({ navigation }){
                                 <Chip 
                                     key={tag.id}
                                     selected={isSelected}
-                                    style={[ isSelected ? styles.chipSelected : styles.chipUnselected, ]}
+                                    style={[ isSelected ? settings.activeStyle.chipSelected : settings.activeStyle.chipUnselected, ]}
                                     showSelectedCheck={false}
                                     onPress={() => handleChipPress(tag.id)}
                                     mode={isSelected ? 'flat' : 'outlined'}
-                                    textStyle={[ isSelected ? styles.chipSelectedText : styles.chipUnselectedText, ]}
+                                    textStyle={[ isSelected ? settings.activeStyle.chipSelectedText : settings.activeStyle.chipUnselectedText, ]}
                                 >
                                         {tag.name}
                                 </Chip>
@@ -132,9 +135,9 @@ export default function HomeScreen({ navigation }){
                         })}
 
                     </View> 
-                    <SafeAreaView style={styles.chipView}>
-                        <View style={styles.content}>
-                            <Button style={styles.button}
+                    <SafeAreaView style={settings.activeStyle.chipView}>
+                        <View style={settings.activeStyle.content}>
+                            <Button style={settings.activeStyle.button}
                                 mode="contained" 
                                 onPress={() => setDateVisible(true)}
                                 icon="calendar"
@@ -142,7 +145,7 @@ export default function HomeScreen({ navigation }){
                                 Pick Date
                             </Button>
 
-                            <Text style={styles.timeText}>
+                            <Text style={settings.activeStyle.timeText}>
                                 {datePicked ? `Selected Date: ${searchDate}` : 'No date selected yet'}
                             </Text>
 
