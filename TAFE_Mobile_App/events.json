@@ -33,7 +33,7 @@
     "startTime": "17:30",
     "endTime": "19:15",
     "location": "Open Air Park",
-    "tags": ["7"],
+    "tags": ["5", "7"],
     "description": "PG-rated outdoor screening.",
     "capacity": 120,
     "spotsRemaining": 95,
@@ -55,7 +55,7 @@
   {
     "id": 105,
     "title": "Pilates Flow REMOTE",
-    "date": "2025-08-14",
+    "date": "2026-11-17",
     "startTime": "06:30",
     "endTime": "07:30",
     "location": "Community Hall A",

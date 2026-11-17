@@ -11,6 +11,7 @@ import SettingsScreen from './screens/SettingsScreen';
 import EventsScreen from './screens/EventsScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import { SettingsProvider } from './contexts/SettingsContext';
+import RegConfScreen from './screens/RegConfScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -19,98 +20,6 @@ const EVENT_FETCH_URL = 'https://raw.githubusercontent.com/CandlelitGreg/TAFE_ap
 
 const date = new Date();
 export const today = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-
-
-// const UncheckedMOCKITEMS = [
-//     {
-//         id: '1',
-//         title: 'Random book',
-//         description: 'Really, really, really long description of a definitely random and totally real book despite the fact this is supposed to be an event application for the mobile phone and tablet',
-//         location: 'Community Hall',
-//         date: '12/12/2012',
-//         time: '08:30-09:15',
-//         spotsRemaining: '5',
-//         tags: ['4']
-//     },
-//     {
-//         id: '2',
-//         title: 'Different book',
-//         description: 'this book is totally not random',
-//         location: 'Community Hall',
-//         date: '12/12/2012',
-//         time: '08:30-09:15',
-//         spotsRemaining: '5',
-//         tags: ['5']
-//     },
-//     {
-//         id: '3',
-//         title: 'Kindle',
-//         description: 'gave up on books pretty quickly',
-//         location: 'Community Hall',
-//         date: '11/11/2012',
-//         time: '08:30-09:15',
-//         spotsRemaining: '5',
-//         tags: ['2']
-//     },
-//     {
-//         id: '4',
-//         title: 'Random book',
-//         description: 'random book desc',
-//         location: 'Community Hall',
-//         date: '11/11/2026',
-//         time: '08:30-09:15',
-//         spotsRemaining: '5',
-//         tags: ['3']
-//     },
-//     {
-//         id: '5',
-//         title: 'Different book',
-//         description: 'this book is totally not random',
-//         location: 'Community Hall',
-//         date: '12/11/2026',
-//         time: '08:30-09:15',
-//         spotsRemaining: '5',
-//         tags: ['2']
-//     },
-//     {
-//         id: '6',
-//         title: 'Kindle',
-//         description: 'gave up on books pretty quickly',
-//         location: 'Community Hall',
-//         date: '11/11/2026',
-//         time: '08:30-09:15',
-//         spotsRemaining: '5',
-//         tags: ['1', '4', '5']
-//     },
-//     {
-//         id: '7',
-//         title: 'Different book',
-//         description: 'this book is totally not random',
-//         location: 'Community Hall',
-//         date: '12/12/2012',
-//         time: '08:30-09:15',
-//         spotsRemaining: '5',
-//         tags: ['2']
-//     },
-//     {
-//         id: '8',
-//         title: 'Kindle',
-//         description: 'gave up on books pretty quickly',
-//         location: 'Community Hall',
-//         date: '12/12/2012',
-//         time: '08:30-09:15',
-//         spotsRemaining: '5',
-//         tags: ['4', '6']
-//     }
-// ]
-
-// export const MOCKITEMS = UncheckedMOCKITEMS.map((event) => ({
-//   ...event,
-//   tags:
-//     event.date === today 
-//       ? Array.from(new Set(['0', ...event.tags]))
-//       : event.tags.filter((tag) => tag !== '0'),
-// }));
 
 
 export const CHIP_DATA = [
@@ -163,6 +72,7 @@ function HomeStack() {
       }}
     >
       <Stack.Screen name='Home' component={HomeScreen} options={{headerShown: false}}/>
+      <Stack.Screen name='Confirmation' component={RegConfScreen} options={{headerShown: false}}/>
       <Stack.Screen name='Event Details' component={DetailsScreen} options={( {navigation} ) => ({headerRight: () => 
           (
           <IconButton

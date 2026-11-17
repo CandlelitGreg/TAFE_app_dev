@@ -180,6 +180,12 @@ const styles = StyleSheet.create({
         borderWidth: 1.5,
         padding: 15,
         paddingTop: 22
+    },
+    registrationResult: {
+        marginBottom: 12,
+        justifyContent: 'centre',
+        color: '#010c31',
+        fontSize: 18
     }
 })
 
@@ -362,6 +368,12 @@ const stylesFont = StyleSheet.create({
         borderWidth: 1.5,
         padding: 15,
         paddingTop: 22
+    },
+    registrationResult: {
+        marginBottom: 12,
+        justifyContent: 'centre',
+        color: '#010c31',
+        fontSize: 23
     }
 })
 
@@ -537,6 +549,12 @@ const darkStyles = StyleSheet.create({
         borderWidth: 1.5,
         padding: 15,
         paddingTop: 22
+    },
+    registrationResult: {
+        marginBottom: 12,
+        justifyContent: 'centre',
+        color: '#F5F5F5',
+        fontSize: 17
     }
 })
 
@@ -716,6 +734,12 @@ const darkStylesFont = StyleSheet.create({
         borderWidth: 1.5,
         padding: 15,
         paddingTop: 22
+    },
+    registrationResult: {
+        marginBottom: 12,
+        justifyContent: 'centre',
+        color: '#F5F5F5',
+        fontSize: 23
     }
 })
 
