@@ -5,6 +5,7 @@ import { Text, Button, Card, Chip, IconButton } from 'react-native-paper';
 import { DatePickerModal, registerTranslation, en } from 'react-native-paper-dates';
 import { fetchEvents, CHIP_DATA, today } from '../App';
 import { useSettings } from '../contexts/SettingsContext';
+import { useAudioPlayer } from 'expo-audio';
 
 
 
@@ -13,6 +14,14 @@ export default function HomeScreen({ navigation }){
     const { settings, updateSetting } = useSettings();
     const { MOCKITEMS, loading } = fetchEvents();
 
+    const clickSource = require('../assets/PotentialClickEffect.mp3');
+    const sendSource = require('../assets/sending-effect.mp3');
+    const bloopSource = require('../assets/bloop-effect.mp3');
+    const clickPlayer = useAudioPlayer(clickSource);
+    const sendPlayer = useAudioPlayer(sendSource);
+    const bloopPlayer = useAudioPlayer(bloopSource);
+    
+
     const [chipIsOpen, setChipIsOpen] = useState(false);
     const [search, setSearch] = useState('');
     const [selectedChips, setSelectedChips] = useState([]);
@@ -20,6 +29,13 @@ export default function HomeScreen({ navigation }){
     const [datePicked, setDatePicked] = useState(false);
     const [searchDate, setSearchDate] = useState('');
     const [dateVisible, setDateVisible] = useState(false);
+
+    const playSoundEffect = (player) => {
+        if (settings.soundEffects){ 
+            player.seekTo(0);
+            player.play();
+        }
+    }
 
     const dismissDate = useCallback(() => {
         setDateVisible(false);
@@ -53,6 +69,7 @@ export default function HomeScreen({ navigation }){
     }, []);
 
     const handleChipPress = (id) => {
+        playSoundEffect(clickPlayer);
         setSelectedChips((prevSelected) => {
             if (prevSelected?.includes(id)) {
                 if (id === '0') {
@@ -83,7 +100,7 @@ export default function HomeScreen({ navigation }){
             <IconButton
                 icon='cog'
                 size={24}
-                onPress={() => navigation.navigate('Settings')}
+                onPress={() => {navigation.navigate('Settings'), playSoundEffect(bloopPlayer)}}
                 style={{position: 'absolute', top: '18px', right: '10px'}}
             />
             <Card style={settings.activeStyle.card}>
@@ -92,7 +109,7 @@ export default function HomeScreen({ navigation }){
                     <Text style={settings.activeStyle.cardText}>
                         Find and register for Community Events
                     </Text>
-                    <Button mode='contained' style={settings.activeStyle.button} onPress={() => navigation.navigate('Events', { search: '', searchedChips: ['0']})}>
+                    <Button mode='contained' style={settings.activeStyle.button} onPress={() => {navigation.navigate('Events', { search: '', searchedChips: ['0']}), playSoundEffect(sendPlayer)}}>
                         <Text style={settings.activeStyle.buttonText}>
                             View Today's Events
                         </Text>
@@ -108,10 +125,10 @@ export default function HomeScreen({ navigation }){
                 <IconButton
                     icon='magnify'
                     size={30}
-                    onPress={() => navigation.navigate('Events', { search: search, searchedChips: selectedChips, searchedWithDate: datePicked, searchedDate: date })}
+                    onPress={() => {navigation.navigate('Events', { search: search, searchedChips: selectedChips, searchedWithDate: datePicked, searchedDate: date }), playSoundEffect(sendPlayer);}}
                     style={{position: 'absolute', right: '40px'}}
                 />
-                <IconButton onPress={() => setChipIsOpen(!chipIsOpen)} icon={!chipIsOpen ? 'chevron-down' : 'chevron-up'} style={{marginHorizontal: 0}}/>
+                <IconButton onPress={() => {setChipIsOpen(!chipIsOpen), playSoundEffect(bloopPlayer);}} icon={!chipIsOpen ? 'chevron-down' : 'chevron-up'} style={{marginHorizontal: 0}}/>
             </View>
                 
             {chipIsOpen && (

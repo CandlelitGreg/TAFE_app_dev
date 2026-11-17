@@ -2,9 +2,20 @@ import { View, StyleSheet, Switch } from 'react-native';
 import { Text } from 'react-native-paper'
 import { useState } from 'react';
 import { useSettings } from '../contexts/SettingsContext';
+import { useAudioPlayer } from 'expo-audio';
 
 export default function SettingsScreen({ navigation }) {
     const { settings, updateSetting } = useSettings();
+
+    const bloopSource = require('../assets/bloop-effect.mp3');
+    const bloopPlayer = useAudioPlayer(bloopSource);
+
+    const playSoundEffect = (player) => {
+        if (settings.soundEffects){ 
+            player.seekTo(0);
+            player.play();
+        }
+    }
 
     return (
         <View style={settings.activeStyle.container}>
@@ -21,7 +32,7 @@ export default function SettingsScreen({ navigation }) {
                         trackColor={{ false: '#767577', true: '#3CA6E5' }}
                         thumbColor={settings.darkMode ? '#DDAB5E' : '#f4f3f4'}
                         activeThumbColor={settings.darkMode ? '#DDAB5E' : '#f4f3f4'}
-                        onValueChange={(val) => updateSetting('darkMode', val)}
+                        onValueChange={(val) => {updateSetting('darkMode', val), playSoundEffect(bloopPlayer)}}
                         value={settings.darkMode}
                     />
                 </View>
@@ -34,7 +45,7 @@ export default function SettingsScreen({ navigation }) {
                         trackColor={{ false: '#767577', true: '#3CA6E5' }}
                         thumbColor={settings.largeFonts ? '#DDAB5E' : '#f4f3f4'}
                         activeThumbColor={settings.largeFonts ? '#DDAB5E' : '#f4f3f4'}
-                        onValueChange={(val) => updateSetting('largeFonts', val)}
+                        onValueChange={(val) => {updateSetting('largeFonts', val), playSoundEffect(bloopPlayer)}}
                         value={settings.largeFonts}
                     />
                 </View>
@@ -47,7 +58,7 @@ export default function SettingsScreen({ navigation }) {
                         trackColor={{ false: '#767577', true: '#3CA6E5' }}
                         thumbColor={settings.soundEffects ? '#DDAB5E' : '#f4f3f4'}
                         activeThumbColor={settings.soundEffects ? '#DDAB5E' : '#f4f3f4'}
-                        onValueChange={(val) => updateSetting('soundEffects', val)}
+                        onValueChange={(val) => {updateSetting('soundEffects', val), playSoundEffect(bloopPlayer)}}
                         value={settings.soundEffects}
                     />
                 </View>

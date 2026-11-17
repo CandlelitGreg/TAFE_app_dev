@@ -5,6 +5,7 @@ import { Text, Button, Card, Chip, IconButton, ActivityIndicator, Provider as Pa
 import { DatePickerModal, registerTranslation, en } from 'react-native-paper-dates';
 import { fetchEvents, CHIP_DATA, today } from '../App';
 import { useSettings } from '../contexts/SettingsContext';
+import { useAudioPlayer } from 'expo-audio';
 
 
 registerTranslation('en', en);
@@ -15,7 +16,13 @@ registerTranslation('en', en);
 export default function EventsScreen({ route, navigation }){
     const { settings, updateSetting } = useSettings();
     const { MOCKITEMS, loading } = fetchEvents();
-
+    
+    const clickSource = require('../assets/PotentialClickEffect.mp3');
+    const sendSource = require('../assets/sending-effect.mp3');
+    const bloopSource = require('../assets/bloop-effect.mp3');
+    const clickPlayer = useAudioPlayer(clickSource);
+    const sendPlayer = useAudioPlayer(sendSource);
+    const bloopPlayer = useAudioPlayer(bloopSource);
 
     const { search } = route.params || {};
     const { searchedChips } = route.params || {};
@@ -31,6 +38,13 @@ export default function EventsScreen({ route, navigation }){
     const [searchDate, setSearchDate] = useState(`${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`);
     const [searchedEvents, setSearchedEvents] = useState(!datePicked ? MOCKITEMS.filter((item) => item.title.toLowerCase().includes(searchInput.toLowerCase()) && (!Array.isArray(selectedChips) || (selectedChips.every(chip => item.tags.includes(chip))))) : MOCKITEMS.filter((item) => item.title.toLowerCase().includes(searchInput.toLowerCase()) && (!Array.isArray(selectedChips) || selectedChips.every(chip => item.tags.includes(chip))) && item.date === searchDate) || MOCKITEMS);
     const [dateVisible, setDateVisible] = useState(false);
+
+    const playSoundEffect = (player) => {
+        if (settings.soundEffects){ 
+            player.seekTo(0);
+            player.play();
+        }
+    }
 
     const dismissDate = useCallback(() => {
         setDateVisible(false);
@@ -82,6 +96,7 @@ export default function EventsScreen({ route, navigation }){
 
 
     const handleChipPress = (id) => {
+        playSoundEffect(clickPlayer);
         setSelectedChips((prevSelected) => {
             if (prevSelected?.includes(id)) {
                 if (id === '0') {
@@ -124,10 +139,10 @@ export default function EventsScreen({ route, navigation }){
                     <IconButton
                         icon='magnify'
                         size={30}
-                        onPress={updateSearchResults}
+                        onPress={() => {updateSearchResults(), playSoundEffect(sendPlayer)}}
                         style={{position: 'absolute', right: '40px'}}
                     />
-                    <IconButton onPress={() => setChipIsOpen(!chipIsOpen)} icon={!chipIsOpen ? 'chevron-down' : 'chevron-up'} style={{marginHorizontal: 0}}/>
+                    <IconButton onPress={() => {setChipIsOpen(!chipIsOpen), playSoundEffect(bloopPlayer)}} icon={!chipIsOpen ? 'chevron-down' : 'chevron-up'} style={{marginHorizontal: 0}}/>
                 </View>
                 
                 {chipIsOpen && (
@@ -190,7 +205,7 @@ export default function EventsScreen({ route, navigation }){
                     { (searchedEvents.length) < 1 && (
                             <Button style={settings.activeStyle.button}
                                 mode="contained" 
-                                onPress={() => resetFilters()}>
+                                onPress={() => {resetFilters(), playSoundEffect(bloopPlayer)}}>
                                 Reset filters
                             </Button>
                         )
@@ -201,7 +216,7 @@ export default function EventsScreen({ route, navigation }){
                             <Card
                                 key={item.id}
                                 style={settings.activeStyle.card}
-                                onPress={() => navigation.navigate('Event Details', { item: item })}
+                                onPress={() => {navigation.navigate('Event Details', { item: item }), playSoundEffect(sendPlayer)}}
                             >
                                 <Card.Content style={{marginTop: 0}}>
                                     <Text style={settings.activeStyle.cardTitle}>

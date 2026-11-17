@@ -2,6 +2,7 @@ import { View, StyleSheet } from 'react-native';
 import { Text, Card, Chip, Button, IconButton } from 'react-native-paper'
 import { fetchEvents, CHIP_DATA } from '../App';
 import { useSettings } from '../contexts/SettingsContext';
+import { useAudioPlayer } from 'expo-audio';
 
 
 
@@ -9,7 +10,22 @@ export default function RegConfScreen({route, navigation}) {
     const { settings, updateSetting } = useSettings();
     const { MOCKITEMS, loading } = fetchEvents();
 
+    const clickSource = require('../assets/PotentialClickEffect.mp3');
+    const sendSource = require('../assets/sending-effect.mp3');
+    const bloopSource = require('../assets/bloop-effect.mp3');
+    const clickPlayer = useAudioPlayer(clickSource);
+    const sendPlayer = useAudioPlayer(sendSource);
+    const bloopPlayer = useAudioPlayer(bloopSource);
+
     const { item } = route.params;
+
+    const playSoundEffect = (player) => {
+        if (settings.soundEffects){ 
+            player.seekTo(0);
+            player.play();
+        }
+    }
+
     return (
         <View style={settings.activeStyle.container}>
             {item.spotsRemaining > 0 && 
@@ -61,7 +77,7 @@ export default function RegConfScreen({route, navigation}) {
                     </View>
                 </Card.Content>
             </Card>}   
-            <Button mode='contained' style={settings.activeStyle.button}  onPress={() => navigation.navigate('Home')}>
+            <Button mode='contained' style={settings.activeStyle.button}  onPress={() => {navigation.navigate('Home'), playSoundEffect(sendPlayer)}}>
                 <Text style={ settings.activeStyle.buttonText }>
                     Go back to Home Page
                 </Text>

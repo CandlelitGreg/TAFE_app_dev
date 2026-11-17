@@ -166,7 +166,7 @@
     "tags": ["9"],
     "description": "Ages 13–17. Topic announced on the day.",
     "capacity": 20,
-    "spotsRemaining": 11,
+    "spotsRemaining": 0,
     "isCancelled": false
   },
   {
@@ -205,7 +205,7 @@
     "tags": ["9"],
     "description": "Covers CPR, bandaging, and emergency response.",
     "capacity": 25,
-    "spotsRemaining": 6,
+    "spotsRemaining": 1,
     "isCancelled": false
   },
   {
@@ -270,7 +270,7 @@
     "tags": ["2", "5"],
     "description": "Gentle morning movement suitable for all ages.",
     "capacity": 25,
-    "spotsRemaining": 16,
+    "spotsRemaining": 0,
     "isCancelled": false
   },
   {
@@ -335,7 +335,7 @@
     "tags": ["9"],
     "description": "Historian presents stories from the town's founding era.",
     "capacity": 40,
-    "spotsRemaining": 22,
+    "spotsRemaining": 0,
     "isCancelled": false
   },
   {
