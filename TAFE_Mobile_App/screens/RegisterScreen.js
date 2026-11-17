@@ -1,12 +1,13 @@
 import { useState, useCallback } from 'react';
 import { View, StyleSheet, TextInput, ScrollView } from 'react-native';
 import { Text, Card, Chip, Button, IconButton } from 'react-native-paper'
-import { MOCKITEMS, CHIP_DATA } from '../App';
+import { fetchEvents, CHIP_DATA } from '../App';
 import { useSettings } from '../contexts/SettingsContext';
 
 
 export default function RegisterScreen({route, navigation}) {
     const { settings, updateSetting } = useSettings();
+    const { MOCKITEMS, loading } = fetchEvents();
 
     const { item } = route.params;
     const [name, setName] = useState('');
@@ -33,7 +34,7 @@ export default function RegisterScreen({route, navigation}) {
                         {item.location}
                     </Text>
                     <Text style={settings.activeStyle.registerCardDetails} variant='bodyMedium'>
-                        {item.time + ' || '+ item.date}
+                        {item.startTime + '-' + item.endTime + ' || '+ item.date}
                     </Text>
                     <View style={settings.activeStyle.chipView}>
                         {Object.values(item.tags).map(tag => 

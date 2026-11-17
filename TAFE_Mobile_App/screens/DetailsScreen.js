@@ -1,12 +1,13 @@
 import { View, StyleSheet } from 'react-native';
 import { Text, Card, Chip, Button, IconButton } from 'react-native-paper'
-import { MOCKITEMS, CHIP_DATA } from '../App';
+import { fetchEvents, CHIP_DATA } from '../App';
 import { useSettings } from '../contexts/SettingsContext';
 
 
 
 export default function DetailsScreen({route, navigation}) {
     const { settings, updateSetting } = useSettings();
+    const { MOCKITEMS, loading } = fetchEvents();
 
     const { item } = route.params;
     return (
@@ -27,7 +28,7 @@ export default function DetailsScreen({route, navigation}) {
                     {item.date}
                 </Text>
                 <Text style={settings.activeStyle.cardDetails} variant='bodyMedium'>
-                    {item.time}
+                    {item.startTime}-{item.endTime}
                 </Text>
             </View>
             <Text style={[settings.activeStyle.cardDetails, {textAlign: 'right'}]} variant='bodyMedium'>

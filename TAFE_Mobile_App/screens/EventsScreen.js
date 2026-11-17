@@ -1,9 +1,9 @@
 //IMPORTS
 import { useState, useCallback } from 'react';
 import { View, StyleSheet, ScrollView, TextInput, SafeAreaView } from 'react-native';
-import { Text, Button, Card, Chip, IconButton, Provider as PaperProvider } from 'react-native-paper';
+import { Text, Button, Card, Chip, IconButton, ActivityIndicator, Provider as PaperProvider } from 'react-native-paper';
 import { DatePickerModal, registerTranslation, en } from 'react-native-paper-dates';
-import { MOCKITEMS, CHIP_DATA, today } from '../App';
+import { fetchEvents, CHIP_DATA, today } from '../App';
 import { useSettings } from '../contexts/SettingsContext';
 
 
@@ -14,6 +14,7 @@ registerTranslation('en', en);
 //FUNCTION Export OR Compenent to use <Tag/>
 export default function EventsScreen({ route, navigation }){
     const { settings, updateSetting } = useSettings();
+    const { MOCKITEMS, loading } = fetchEvents();
 
     const { search } = route.params || {};
     const { searchedChips } = route.params || {};
@@ -25,7 +26,7 @@ export default function EventsScreen({ route, navigation }){
     const [searchDisplay, setSearchDisplay] = useState('');
     const [date, setDate] = useState(searchedDate || new Date());
     const [datePicked, setDatePicked] = useState(searchedWithDate || false);
-    const [searchDate, setSearchDate] = useState(`${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`);
+    const [searchDate, setSearchDate] = useState(`${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`);
     const [searchedEvents, setSearchedEvents] = useState(!datePicked ? MOCKITEMS.filter((item) => item.title.toLowerCase().includes(searchInput.toLowerCase()) && (!Array.isArray(selectedChips) || (selectedChips.every(chip => item.tags.includes(chip))))) : MOCKITEMS.filter((item) => item.title.toLowerCase().includes(searchInput.toLowerCase()) && (!Array.isArray(selectedChips) || selectedChips.every(chip => item.tags.includes(chip))) && item.date === searchDate) || MOCKITEMS);
     const [dateVisible, setDateVisible] = useState(false);
 
@@ -38,7 +39,7 @@ export default function EventsScreen({ route, navigation }){
         const day = String(params.date.getDate()).padStart(2, '0');
         const month = String(params.date.getMonth() + 1).padStart(2, '0');
         const year = params.date.getFullYear();
-        return `${day}/${month}/${year}`;
+        return `${year}-${month}-${day}`;
     }, []);
 
     const confirmDate = useCallback((params) => {
@@ -169,13 +170,14 @@ export default function EventsScreen({ route, navigation }){
                 </Text>
                 <ScrollView>
                 { (searchedEvents.length) < 1 && (
-                            <Button style={settings.activeStyle.button}
-                                mode="contained" 
-                                onPress={() => resetFilters()}>
-                                Reset filters
-                            </Button>
-                        )
-                    }
+                        <Button style={settings.activeStyle.button}
+                            mode="contained" 
+                            onPress={() => resetFilters()}>
+                            Reset filters
+                        </Button>
+                    )
+                }
+                {loading && <ActivityIndicator animating={true} size={300} />}
                 {
                     searchedEvents.map( item => (
                         <Card
@@ -192,7 +194,7 @@ export default function EventsScreen({ route, navigation }){
                                         {item.location}
                                     </Text>
                                     <Text style={settings.activeStyle.cardHeading}>
-                                        {item.time}
+                                        {item.startTime}-{item.endTime}
                                     </Text>
                                 </View>
                                 <Text style={settings.activeStyle.innerCard} variant='bodyMedium'>

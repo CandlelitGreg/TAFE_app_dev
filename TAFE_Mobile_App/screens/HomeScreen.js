@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react';
 import { View, StyleSheet, ScrollView, TextInput, SafeAreaView } from 'react-native';
 import { Text, Button, Card, Chip, IconButton } from 'react-native-paper';
 import { DatePickerModal, registerTranslation, en } from 'react-native-paper-dates';
-import { MOCKITEMS, CHIP_DATA, today } from '../App';
+import { fetchEvents, CHIP_DATA, today } from '../App';
 import { useSettings } from '../contexts/SettingsContext';
 
 
@@ -11,6 +11,7 @@ import { useSettings } from '../contexts/SettingsContext';
 //FUNCTION Export OR Compenent to use <Tag/>
 export default function HomeScreen({ navigation }){
     const { settings, updateSetting } = useSettings();
+    const { MOCKITEMS, loading } = fetchEvents();
 
     const [chipIsOpen, setChipIsOpen] = useState(false);
     const [search, setSearch] = useState('');
@@ -29,7 +30,7 @@ export default function HomeScreen({ navigation }){
         const day = String(params.date.getDate()).padStart(2, '0');
         const month = String(params.date.getMonth() + 1).padStart(2, '0');
         const year = params.date.getFullYear();
-        return `${day}/${month}/${year}`;
+        return `${year}-${month}-${day}`;
     }, []);
 
     const confirmDate = useCallback((params) => {
