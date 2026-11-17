@@ -127,10 +127,22 @@ function HomeStack() {
   return (
     <Stack.Navigator
       screenOptions={( {navigation} ) => ({
-        headerRight: () => {
-          const route = useRoute();
-          if (route.name !== 'Settings')
-          {
+        // headerRight: () => 
+        //   (
+        //   <IconButton
+        //     type='button'
+        //     icon='cog'
+        //     size={24}
+        //     onPress={() => navigation.navigate('Settings')}
+        //     style={{position: 'absolute', top: '6px', right: '10px'}}
+        //   />
+        // ),
+        headerStyle: { backgroundColor: '#3CA6E5' },
+        headerTintColor: '#ffffff'
+      })}
+    >
+      <Stack.Screen name='Home' component={HomeScreen} options={{headerShown: false}}/>
+      <Stack.Screen name='Event Details' component={DetailsScreen} options={( {navigation} ) => ({headerRight: () => 
           (
           <IconButton
             type='button'
@@ -139,16 +151,28 @@ function HomeStack() {
             onPress={() => navigation.navigate('Settings')}
             style={{position: 'absolute', top: '6px', right: '10px'}}
           />
-        )}},
-        headerStyle: { backgroundColor: '#3CA6E5' },
-        headerTintColor: '#ffffff'
-      })}
-    >
-      <Stack.Screen name='Home' component={HomeScreen} options={{headerShown: false}}/>
-      <Stack.Screen name='Event Details' component={DetailsScreen} options={{headerShown: true}}/>
-      <Stack.Screen name='Events' component={EventsScreen} options={{headerShown: true}}/>
+        ), headerShown: true})}/>
+      <Stack.Screen name='Events' component={EventsScreen} options={( {navigation} ) => ({headerRight: () => 
+          (
+          <IconButton
+            type='button'
+            icon='cog'
+            size={24}
+            onPress={() => navigation.navigate('Settings')}
+            style={{position: 'absolute', top: '6px', right: '10px'}}
+          />
+        ), headerShown: true})}/>
       <Stack.Screen name='Settings' component={SettingsScreen} options={{headerShown: true}}/>
-      <Stack.Screen name='Register' component={RegisterScreen} options={{headerShown: true}}/>
+      <Stack.Screen name='Register' component={RegisterScreen} options={( {navigation} ) => ({headerRight: () => 
+          (
+          <IconButton
+            type='button'
+            icon='cog'
+            size={24}
+            onPress={() => navigation.navigate('Settings')}
+            style={{position: 'absolute', top: '6px', right: '10px'}}
+          />
+        ), headerShown: true})}/>
     </Stack.Navigator>
   );
 }
