@@ -186,8 +186,6 @@ const styles = StyleSheet.create({
 const stylesFont = StyleSheet.create({
     container: {
         flex: 1,
-        // justifyContent: 'center',
-        // alignItems: 'center',
         padding: 24,
         backgroundColor: '#F5F5F5'
     },
@@ -200,7 +198,7 @@ const stylesFont = StyleSheet.create({
         marginRight: 20,
         fontWeight: 'bold',
         color: '#010c31',
-        fontSize: 27
+        fontSize: 32
     },
     subtitle: {
         textAlign: 'center',
@@ -213,10 +211,15 @@ const stylesFont = StyleSheet.create({
         borderColor: '#000000',
         borderWidth: 2
     },
+    buttonText: {
+        color: '#F5F5F5', 
+        fontWeight: 'bold',
+        fontSize: 16
+    },
     searchFiltered: {
         fontWeight: 'bold', 
         color: '#000', 
-        fontSize: 16
+        fontSize: 19
     },
     card: {
         marginBottom: 10,
@@ -226,10 +229,15 @@ const stylesFont = StyleSheet.create({
         borderColor: '#DDAB5E',
         borderWidth: 1.5
     },
+    smallCardTitle: {
+        fontWeight: 'bold', 
+        fontSize: 29, 
+        color: '#424754'
+    },
     cardTitle: {
         fontWeight: 'bold',
         color: '#000000',
-        fontSize: 20,
+        fontSize: 24,
         paddingBottom: 5
     },
     cardHeading: {
@@ -239,12 +247,27 @@ const stylesFont = StyleSheet.create({
         paddingVertical: 5
     },
     cardHeaders: {
-        // display: flex,
-        // justifyContent: 'space-evenly',
         flexDirection: 'row'
     },
+    cardDetails: {
+        padding: 5, 
+        fontSize: 20, 
+        color: '#000000', 
+        fontWeight: 'bold'
+    },
+    registerCardDetails: {
+        textAlign: 'right', 
+        padding: 5, 
+        fontSize: 20, 
+        color: '#000000', 
+        fontWeight: 'bold'
+    },
+    cardText: {
+        color: '#424754',
+        fontSize: 18
+    },
     innerCard: {
-        fontSize: 12,
+        fontSize: 18,
         color: '#000'
     },
     chipView: {
@@ -272,7 +295,7 @@ const stylesFont = StyleSheet.create({
     },
     eventsSearch: {
         flex: 1,
-        fontSize: 'small',
+        fontSize: 'medium',
         marginTop: 5,
         backgroundColor: '#fff',
         color: '#000',
@@ -285,6 +308,11 @@ const stylesFont = StyleSheet.create({
         flexDirection: 'horizontal'
 
     },
+    label: {
+        paddingTop: 2,
+        fontWeight: 'bold',
+        color: '#F5F5F5'
+    },
     content: {
         flex: 1,
         justifyContent: 'space-evenly',
@@ -294,7 +322,46 @@ const stylesFont = StyleSheet.create({
     },
     timeText: {
         paddingTop: 6,
-        color: '#7e8390'
+        color: '#7e8390',
+        fontSize: 16
+    },
+    settingsContent: {
+        flex: 1,
+        justifyContent: 'space-evenly',
+        flexDirection: 'row',
+        padding: 25,
+    },
+    label: {
+        paddingTop: 2,
+        fontWeight: 'bold',
+        color: '#010c31',
+        fontSize: 17
+    },
+    underTextInputText: {
+        color: '#424754',
+        fontSize: 15,
+        marginLeft: 15,
+        marginTop: 5
+    },
+    overTextInputText: {
+        color: '#7e8390',
+        position: 'absolute',
+        top: 0,
+        left: -6,
+        fontSize: 15,
+        marginLeft: 23,
+        marginTop: 8
+    },
+    registerInput: {
+        flex: 1,
+        fontSize: 'medium',
+        marginTop: 5,
+        backgroundColor: '#fff',
+        color: '#000',
+        borderColor: '#DDAB5E',
+        borderWidth: 1.5,
+        padding: 15,
+        paddingTop: 22
     }
 })
 
@@ -476,8 +543,10 @@ const darkStyles = StyleSheet.create({
 const darkStylesFont = StyleSheet.create({
     container: {
         flex: 1,
-        // justifyContent: 'center',
-        // alignItems: 'center',
+        padding: 24,
+        backgroundColor: '#010c31'
+    },
+    settingsContainer: {
         padding: 24,
         backgroundColor: '#010c31'
     },
@@ -486,23 +555,29 @@ const darkStylesFont = StyleSheet.create({
         marginRight: 20,
         fontWeight: 'bold',
         color: '#ffffff',
-        fontSize: 27
+        fontSize: 32
     },
     subtitle: {
         textAlign: 'center',
         marginBottom: 24,
         color: '#010c31'
+        
     },
     button: {
         marginTop: 8,
         backgroundColor: '#3CA6E5',
-        borderColor: '#ffffff',
+        borderColor: '#DDAB5E',
         borderWidth: 2
+    },
+    buttonText: {
+        color: '#424754', 
+        fontWeight: 'bold',
+        fontSize: 16
     },
     searchFiltered: {
         fontWeight: 'bold', 
         color: '#ffffff', 
-        fontSize: 16
+        fontSize: 19
     },
     card: {
         marginBottom: 10,
@@ -512,26 +587,47 @@ const darkStylesFont = StyleSheet.create({
         borderColor: '#DDAB5E',
         borderWidth: 1.5
     },
+    smallCardTitle: {
+        fontWeight: 'bold', 
+        fontSize: 29, 
+        color: '#F5F5F5'
+    },
+    cardText: {
+        color: '#F5F5F5',
+        fontSize: 18
+    },
     cardTitle: {
         fontWeight: 'bold',
         color: '#ffffff',
-        fontSize: 20,
+        fontSize: 24,
         paddingBottom: 5
     },
     cardHeading: {
         flex: 1,
         fontWeight: 'bold',
         color: '#ffffff',
-        paddingVertical: 5
+        paddingVertical: 5,
+        fontSize: 18
     },
     cardHeaders: {
-        // display: flex,
-        // justifyContent: 'space-evenly',
         flexDirection: 'row'
     },
     innerCard: {
-        fontSize: 12,
+        fontSize: 18,
         color: '#ffffff'
+    },
+    cardDetails: {
+        padding: 5, 
+        fontSize: 20, 
+        color: '#ffffff', 
+        fontWeight: 'bold'
+    },
+    registerCardDetails: {
+        textAlign: 'right', 
+        padding: 5, 
+        fontSize: 20, 
+        color: '#ffffff', 
+        fontWeight: 'bold'
     },
     chipView: {
         display: 'flex',
@@ -558,7 +654,7 @@ const darkStylesFont = StyleSheet.create({
     },
     eventsSearch: {
         flex: 1,
-        fontSize: 'small',
+        fontSize: 'medium',
         marginTop: 5,
         backgroundColor: '#000000',
         color: '#ffffff',
@@ -580,7 +676,8 @@ const darkStylesFont = StyleSheet.create({
     },
     timeText: {
         paddingTop: 6,
-        color: '#7e8390'
+        color: '#7e8390',
+        fontSize: 16
     },
     settingsContent: {
         flex: 1,
@@ -591,7 +688,34 @@ const darkStylesFont = StyleSheet.create({
     label: {
         paddingTop: 2,
         fontWeight: 'bold',
-        color: '#010c31'
+        color: '#F5F5F5',
+        fontSize: 17
+    },
+    underTextInputText: {
+        color: '#F5F5F5',
+        fontSize: 15,
+        marginLeft: 15,
+        marginTop: 5
+    },
+    overTextInputText: {
+        color: '#7e8390',
+        position: 'absolute',
+        top: 0,
+        left: -6,
+        fontSize: 15,
+        marginLeft: 23,
+        marginTop: 8
+    },
+    registerInput: {
+        flex: 1,
+        fontSize: 'medium',
+        marginTop: 5,
+        backgroundColor: '#000',
+        color: '#fefefe',
+        borderColor: '#DDAB5E',
+        borderWidth: 1.5,
+        padding: 15,
+        paddingTop: 22
     }
 })
 

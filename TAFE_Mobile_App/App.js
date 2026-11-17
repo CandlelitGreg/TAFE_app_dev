@@ -126,20 +126,10 @@ export const CHIP_DATA = [
 function HomeStack() {
   return (
     <Stack.Navigator
-      screenOptions={( {navigation} ) => ({
-        // headerRight: () => 
-        //   (
-        //   <IconButton
-        //     type='button'
-        //     icon='cog'
-        //     size={24}
-        //     onPress={() => navigation.navigate('Settings')}
-        //     style={{position: 'absolute', top: '6px', right: '10px'}}
-        //   />
-        // ),
+      screenOptions={{
         headerStyle: { backgroundColor: '#3CA6E5' },
         headerTintColor: '#ffffff'
-      })}
+      }}
     >
       <Stack.Screen name='Home' component={HomeScreen} options={{headerShown: false}}/>
       <Stack.Screen name='Event Details' component={DetailsScreen} options={( {navigation} ) => ({headerRight: () => 
