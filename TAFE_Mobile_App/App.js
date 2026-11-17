@@ -135,10 +135,11 @@ export const fetchEvents = () => {
       fetch(EVENT_FETCH_URL)
           .then((response) => response.json())
           .then((data) => {
-                  //console.log(data);
+              setTimeout(() => {
                   setEvents(data);
                   setLoading(false);
-              });
+              }, 3000);     
+          });
   }, []);//Check for error
 
   const MOCKITEMS = events.map((event) => ({
