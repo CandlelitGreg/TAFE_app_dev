@@ -120,7 +120,8 @@ export default function HomeScreen({ navigation }){
                 <TextInput 
                     style={settings.activeStyle.eventsSearch}
                     value={search}
-                    onChangeText={setSearch}>
+                    onChangeText={setSearch}
+                    onSubmitEditing={() => {navigation.navigate('Events', { search: search, searchedChips: selectedChips, searchedWithDate: datePicked, searchedDate: date }), playSoundEffect(sendPlayer);}}>
                 </TextInput>
                 <IconButton
                     icon='magnify'

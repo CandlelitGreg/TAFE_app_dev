@@ -134,6 +134,7 @@ export default function EventsScreen({ route, navigation }){
                         style={settings.activeStyle.eventsSearch}
                         value={searchInput}
                         onChangeText={setSearchInput}
+                        onSubmitEditing={() => {updateSearchResults(), playSoundEffect(sendPlayer)}}
                         >
                     </TextInput>
                     <IconButton
